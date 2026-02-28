@@ -1,0 +1,70 @@
+{
+  "lesson1": {
+    "title": "O Pequeno-Almoço do Robot",
+    "story": "Conhece o Bleep! Ele precisa de ajuda com a torrada. Ajuda-o a pôr os passos pela ordem certa!",
+    "step1": "Pôr o pão na torradeira",
+    "step2": "Esperar que a torrada salte",
+    "step3": "Barrar a manteiga",
+    "step4": "Comer e saborear!",
+    "success": "Bom trabalho! Criaste um Algoritmo!",
+    "retry": "Ups! O Bleep fez uma confusão. Tenta outra ordem!"
+  },
+  "lesson2": {
+    "title": "O Programador do Tempo",
+    "story": "Ajuda o Bleep a decidir o que vestir! Olha para o céu e completa o código.",
+    "condition_sunny": "Se estiver SOL...",
+    "condition_rainy": "Se estiver a CHOVER...",
+    "action_sunglasses": "...então usa ÓCULOS DE SOL",
+    "action_umbrella": "...então leva um GUARDA-CHUVA",
+    "else_action": "Caso contrário, usa apenas uma T-SHIRT",
+    "success": "Brilhante! Acabaste de usar Lógica!",
+    "hint": "Vê como estão as nuvens!",
+    "kw_if": "SE",
+    "kw_then": "ENTÃO",
+    "kw_else": "SENÃO",
+    "weather_sunny": "SOL",
+    "weather_rainy": "CHUVA",
+    "action_label_sunglasses": "ÓCULOS DE SOL",
+    "action_label_umbrella": "GUARDA-CHUVA",
+    "error_wrong_condition": "Olha para o céu! Está mesmo a {weather}?",
+    "error_wrong_action": "{weather} quer dizer que precisas de {action}? Pensa melhor!",
+    "tray_cond_label": "Escolhe uma condição (bloco SE) 👇",
+    "tray_act_label": "Escolhe uma ação (bloco ENTÃO) 👇"
+  },
+  "profile": {
+    "setupHeading": "Cria o teu perfil de jogador!",
+    "setupSub": "Diz-nos um pouco sobre ti para começarmos.",
+    "displayNameLabel": "O teu nome de jogador",
+    "displayNamePlaceholder": "ex. EstrelaDoCódigo42",
+    "parentEmailLabel": "Email do pai, mãe ou tutor",
+    "parentEmailPlaceholder": "pai@exemplo.com",
+    "parentEmailHelp": "Vamos enviar-lhes um email rápido a dizer que estás pronto para programar!",
+    "submitButton": "Vamos lá! 🚀"
+  },
+  "waitingRoom": {
+    "title": "Já quase! ⏳",
+    "message": "Enviámos um email aos teus pais! Pede-lhes que cliquem no link para poderes começar a programar.",
+    "subMessage": "Assim que disserem que sim, volta aqui e clica numa lição!",
+    "homeButton": "Voltar ao Início"
+  },
+  "auth": {
+    "signIn": "Entrar",
+    "signUp": "Registar",
+    "signInHeading": "Bem-vindo de volta!",
+    "signUpHeading": "Junta-te à aventura!",
+    "signInSub": "Entra para continuar a tua aventura de programação.",
+    "signUpSub": "Cria uma conta para começar a aprender.",
+    "lockedTitle": "As lições são para membros!",
+    "lockedSub": "Entra ou cria uma conta gratuita para jogar.",
+    "userButtonLabel": "A Minha Conta"
+  },
+  "nav": {
+    "home": "Início",
+    "lessons": "Lições"
+  },
+  "home": {
+    "heading": "Aprende a Programar!",
+    "subheading": "Aventuras divertidas de programação para crianças",
+    "startButton": "Começar a Aprender!"
+  }
+}

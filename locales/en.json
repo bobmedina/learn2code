@@ -1,0 +1,70 @@
+{
+  "lesson1": {
+    "title": "The Breakfast Robot",
+    "story": "Meet Bleep! He needs help making toast. Help him by putting the steps in order!",
+    "step1": "Put bread in toaster",
+    "step2": "Wait for toast to pop",
+    "step3": "Spread the butter",
+    "step4": "Eat and enjoy!",
+    "success": "Great job! You made an Algorithm!",
+    "retry": "Oops! Bleep made a mess. Try a different order!"
+  },
+  "lesson2": {
+    "title": "The Weather Coder",
+    "story": "Help Bleep decide what to wear! Look at the sky and complete the code.",
+    "condition_sunny": "If it is SUNNY...",
+    "condition_rainy": "If it is RAINY...",
+    "action_sunglasses": "...then wear SUNGLASSES",
+    "action_umbrella": "...then take an UMBRELLA",
+    "else_action": "Otherwise, just wear a T-SHIRT",
+    "success": "Brilliant! You just used Logic!",
+    "hint": "Check the clouds!",
+    "kw_if": "IF",
+    "kw_then": "THEN",
+    "kw_else": "ELSE",
+    "weather_sunny": "SUNNY",
+    "weather_rainy": "RAINY",
+    "action_label_sunglasses": "SUNGLASSES",
+    "action_label_umbrella": "UMBRELLA",
+    "error_wrong_condition": "Look at the sky! Is it really {weather}?",
+    "error_wrong_action": "Does {weather} mean you need {action}? Think again!",
+    "tray_cond_label": "Pick a condition (IF slot) 👇",
+    "tray_act_label": "Pick an action (THEN slot) 👇"
+  },
+  "profile": {
+    "setupHeading": "Create your player profile!",
+    "setupSub": "Tell us a bit about you so we can get started.",
+    "displayNameLabel": "Your nickname",
+    "displayNamePlaceholder": "e.g. CodeStar42",
+    "parentEmailLabel": "Parent or guardian's email",
+    "parentEmailPlaceholder": "parent@example.com",
+    "parentEmailHelp": "We'll send them a quick email to say you're ready to code!",
+    "submitButton": "Let's go! 🚀"
+  },
+  "waitingRoom": {
+    "title": "Almost there! ⏳",
+    "message": "We sent an email to your parents! Ask them to click the link so you can start coding.",
+    "subMessage": "Once they say yes, come back and click a lesson!",
+    "homeButton": "Back to Home"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signInHeading": "Welcome back!",
+    "signUpHeading": "Join the adventure!",
+    "signInSub": "Sign in to continue your coding journey.",
+    "signUpSub": "Create an account to start learning.",
+    "lockedTitle": "Lessons are for members!",
+    "lockedSub": "Sign in or create a free account to play.",
+    "userButtonLabel": "My Account"
+  },
+  "nav": {
+    "home": "Home",
+    "lessons": "Lessons"
+  },
+  "home": {
+    "heading": "Learn to Code!",
+    "subheading": "Fun coding adventures for kids",
+    "startButton": "Start Learning!"
+  }
+}

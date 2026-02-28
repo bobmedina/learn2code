@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Nunito', 'Fredoka One', 'Comic Neue', sans-serif;
+  }
+}
+
+@layer utilities {
+  .btn-chunky {
+    @apply font-extrabold rounded-xl px-8 py-4 text-xl shadow-chunky
+           transition-all duration-100 active:shadow-chunky-hover active:translate-y-1
+           select-none cursor-pointer border-none;
+  }
+  .card-kids {
+    @apply bg-white rounded-2xl shadow-lg p-6 border-4;
+  }
+}
