@@ -8,9 +8,12 @@ import {
   closestCenter,
   KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   DragEndEvent,
+  DragStartEvent,
+  DragOverlay,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -55,7 +58,8 @@ function SortableStep({ id, label, index }: { id: string; label: string; index: 
     transform: CSS.Transform.toString(transform),
     transition,
     zIndex: isDragging ? 50 : 'auto',
-    opacity: isDragging ? 0.85 : 1,
+    opacity: isDragging ? 0.35 : 1,
+    touchAction: 'none' as const,
   };
 
   const icon = STEP_ICONS[id as StepKey];
@@ -89,6 +93,25 @@ function SortableStep({ id, label, index }: { id: string; label: string; index: 
 }
 
 // ---------------------------------------------------------------------------
+// Overlay card — follows the pointer/finger during drag
+// ---------------------------------------------------------------------------
+function OverlayCard({ id, label, index }: { id: string; label: string; index: number }) {
+  const icon = STEP_ICONS[id as StepKey];
+  return (
+    <div className="flex items-center gap-4 w-full card-kids border-kids-blue
+      scale-105 opacity-95 shadow-2xl rotate-1 cursor-grabbing">
+      <span className="flex-shrink-0 w-10 h-10 rounded-full bg-kids-purple text-white font-black
+                       flex items-center justify-center text-lg">
+        {index + 1}
+      </span>
+      <span className="text-4xl">{icon}</span>
+      <span className="text-step text-gray-800 flex-1">{label}</span>
+      <span className="text-gray-300 text-2xl select-none">⠿</span>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Main lesson component
 // ---------------------------------------------------------------------------
 export function LessonOne() {
@@ -96,6 +119,7 @@ export function LessonOne() {
 
   const [items, setItems] = useState<StepKey[]>(() => shuffle([...CORRECT_ORDER]));
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [activeId, setActiveId] = useState<StepKey | null>(null);
   // Prevent duplicate DB writes + confetti if the user replays without resetting
   const savedRef = useRef(false);
 
@@ -114,10 +138,21 @@ export function LessonOne() {
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 5,
+      },
+    }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
+  function handleDragStart(event: DragStartEvent) {
+    setActiveId(event.active.id as StepKey);
+  }
+
   function handleDragEnd(event: DragEndEvent) {
+    setActiveId(null);
     const { active, over } = event;
     if (over && active.id !== over.id) {
       setItems((prev) => {
@@ -176,6 +211,7 @@ export function LessonOne() {
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
@@ -190,6 +226,16 @@ export function LessonOne() {
             ))}
           </div>
         </SortableContext>
+
+        <DragOverlay>
+          {activeId ? (
+            <OverlayCard
+              id={activeId}
+              label={t(activeId)}
+              index={items.indexOf(activeId)}
+            />
+          ) : null}
+        </DragOverlay>
       </DndContext>
 
       {/* Action buttons */}
