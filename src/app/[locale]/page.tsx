@@ -8,6 +8,7 @@ export default function HomePage({ params: { locale } }: { params: { locale: str
   const ta  = useTranslations('auth');
   const tL1 = useTranslations('lesson1');
   const tL2 = useTranslations('lesson2');
+  const tL3 = useTranslations('lesson3');
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
@@ -64,7 +65,7 @@ export default function HomePage({ params: { locale } }: { params: { locale: str
       </div>
 
       {/* Lesson cards */}
-      <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-xl">
+      <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-3xl">
 
         <SignedIn>
           {/* Logged-in: clickable cards */}
@@ -77,6 +78,11 @@ export default function HomePage({ params: { locale } }: { params: { locale: str
             <div className="text-5xl mb-3">☀️</div>
             <h2 className="text-xl font-black text-kids-purple">Lesson 2</h2>
             <p className="text-gray-500 font-bold text-sm mt-1">{tL2('title')}</p>
+          </Link>
+          <Link href={`/${locale}/lesson3`} className="card-kids border-kids-green hover:scale-105 transition-transform block">
+            <div className="text-5xl mb-3">🕺</div>
+            <h2 className="text-xl font-black text-kids-purple">Lesson 3</h2>
+            <p className="text-gray-500 font-bold text-sm mt-1">{tL3('title')}</p>
           </Link>
         </SignedIn>
 
@@ -93,6 +99,12 @@ export default function HomePage({ params: { locale } }: { params: { locale: str
             <h2 className="text-xl font-black text-kids-purple">Lesson 2</h2>
             <p className="text-gray-400 font-bold text-sm mt-1">{tL2('title')}</p>
             <p className="text-kids-yellow font-black text-xs mt-2 group-hover:underline">{ta('signIn')} →</p>
+          </Link>
+          <Link href={`/${locale}/sign-in`} className="card-kids border-kids-green hover:scale-105 transition-transform block group">
+            <div className="text-5xl mb-3">🔒</div>
+            <h2 className="text-xl font-black text-kids-purple">Lesson 3</h2>
+            <p className="text-gray-400 font-bold text-sm mt-1">{tL3('title')}</p>
+            <p className="text-kids-green font-black text-xs mt-2 group-hover:underline">{ta('signIn')} →</p>
           </Link>
         </SignedOut>
       </div>

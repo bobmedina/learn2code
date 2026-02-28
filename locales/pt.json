@@ -31,6 +31,28 @@
     "tray_cond_label": "Escolhe uma condição (bloco SE) 👇",
     "tray_act_label": "Escolhe uma ação (bloco ENTÃO) 👇"
   },
+  "lesson3": {
+    "title": "O Duelo de Dança",
+    "story": "O Bleep quer ganhar o concurso de dança! Em vez de escreveres o mesmo movimento várias vezes, usa um CICLO para o fazer repetir os seus passos favoritos.",
+    "instruction": "Faz o Bleep DAR A VOLTA 4 vezes usando apenas UM bloco de movimento.",
+    "loop_label": "Repetir",
+    "times_label": "vezes",
+    "move_spin": "Dar a Volta",
+    "move_clap": "Bater Palmas",
+    "slot_placeholder": "Coloca um movimento aqui",
+    "or_separator": "OU passo a passo",
+    "seq_label": "Passo a passo (a maneira longa!)",
+    "move_tray_label": "Escolhe um bloco de movimento 👇",
+    "success": "Uau! És um mestre dos Ciclos! O teu código agora é muito mais curto.",
+    "hint": "Coloca o bloco 'Dar a Volta' DENTRO do bloco 'Repetir'.",
+    "hint_button": "Dica",
+    "run_button": "Executar!",
+    "running_label": "A executar…",
+    "clear_button": "Limpar",
+    "feedback_too_verbose": "Ufa, é muito trabalho! Consegues tornar o código mais curto com um Ciclo?",
+    "feedback_need_spin": "O Bleep precisa de DAR A VOLTA! Experimenta o bloco Dar a Volta.",
+    "feedback_wrong_count": "O Bleep precisa de dar a volta {count} vezes! Muda o número."
+  },
   "profile": {
     "setupHeading": "Cria o teu perfil de jogador!",
     "setupSub": "Diz-nos um pouco sobre ti para começarmos.",

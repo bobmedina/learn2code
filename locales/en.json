@@ -31,6 +31,28 @@
     "tray_cond_label": "Pick a condition (IF slot) 👇",
     "tray_act_label": "Pick an action (THEN slot) 👇"
   },
+  "lesson3": {
+    "title": "The Robot Dance-Off",
+    "story": "Bleep wants to win the dance contest! Instead of writing the same move over and over, use a LOOP to make him repeat his favourite dance steps.",
+    "instruction": "Make Bleep SPIN 4 times using only ONE move block.",
+    "loop_label": "Repeat",
+    "times_label": "times",
+    "move_spin": "Spin Around",
+    "move_clap": "Clap Hands",
+    "slot_placeholder": "Drop a move here",
+    "or_separator": "OR step by step",
+    "seq_label": "Step by step (the long way!)",
+    "move_tray_label": "Pick a move block 👇",
+    "success": "Woohoo! You're a Loop Legend! Your code is now much shorter.",
+    "hint": "Put the 'Spin Around' block INSIDE the 'Repeat' block.",
+    "hint_button": "Hint",
+    "run_button": "Run!",
+    "running_label": "Running…",
+    "clear_button": "Clear",
+    "feedback_too_verbose": "Phew, that's a lot of work! Can you make it shorter with a Loop?",
+    "feedback_need_spin": "Bleep needs to SPIN! Try the Spin Around block.",
+    "feedback_wrong_count": "Bleep needs to spin {count} times! Change the number."
+  },
   "profile": {
     "setupHeading": "Create your player profile!",
     "setupSub": "Tell us a bit about you so we can get started.",
