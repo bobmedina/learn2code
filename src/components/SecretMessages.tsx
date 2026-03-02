@@ -93,6 +93,8 @@ export function SecretMessages() {
   const [status, setStatus]     = useState<'idle' | 'success'>('idle');
   const [showHint, setShowHint] = useState(false);
   const savedRef = useRef(false);
+  // Keep a ref to the utterance so Chrome doesn't GC it mid-speech
+  const uttRef = useRef<SpeechSynthesisUtterance | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -142,8 +144,13 @@ export function SecretMessages() {
 
   function speak(text: string) {
     if (typeof window === 'undefined' || !window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+    const synth = window.speechSynthesis;
+    // Store in ref to prevent Chrome garbage-collecting the utterance mid-speech
+    uttRef.current = new SpeechSynthesisUtterance(text);
+    uttRef.current.lang = locale === 'pt' ? 'pt-PT' : 'en-US';
+    uttRef.current.rate = 0.9;
+    synth.cancel();
+    synth.speak(uttRef.current);
   }
 
   function handleRun() {
@@ -215,7 +222,7 @@ export function SecretMessages() {
           </div>
           {result && (
             <div className="mt-3 flex justify-center">
-              <button onClick={() => speak(result)} className="btn-chunky bg-kids-green text-white text-sm">
+              <button onClick={() => speak(result!)} className="btn-chunky bg-kids-green text-white text-sm">
                 {t('speak_button')}
               </button>
             </div>
