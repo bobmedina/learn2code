@@ -38,8 +38,6 @@ export function AgeGate({ locale }: AgeGateProps) {
             formFieldLabel: 'font-black text-gray-600 text-sm',
             socialButtonsBlockButton:
               'rounded-xl border-2 border-gray-200 font-bold hover:border-kids-yellow transition-colors',
-            // Hide Clerk's built-in legal consent checkbox — we collect consent via AgeGate
-            formFieldRow__legalAccepted: { style: { display: 'none' } },
           },
         }}
       />
