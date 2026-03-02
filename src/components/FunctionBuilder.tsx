@@ -33,6 +33,7 @@ export function FunctionBuilder() {
   const [animStep, setAnimStep] = useState(-1);
   const [defineGlow, setDefineGlow] = useState(false);
   const [robotKey, setRobotKey] = useState(0);
+  const [robotShake, setRobotShake] = useState(0);
   const [animMove, setAnimMove] = useState<Block | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [status, setStatus] = useState<'idle' | 'success'>('idle');
@@ -57,13 +58,8 @@ export function FunctionBuilder() {
     setDefineGlow(true);
     setRobotKey(k => k + 1);
 
-    const t1 = setTimeout(() => {
-      setDefineGlow(false);
-    }, 500);
-
-    const t2 = setTimeout(() => {
-      setAnimStep(s => s + 1);
-    }, 700);
+    const t1 = setTimeout(() => setDefineGlow(false), 500);
+    const t2 = setTimeout(() => setAnimStep(s => s + 1), 700);
 
     return () => {
       clearTimeout(t1);
@@ -72,7 +68,7 @@ export function FunctionBuilder() {
   }, [callPhase, animStep, defineBlocks]);
 
   // ---------------------------------------------------------------------------
-  // Success check when done
+  // Save + confetti on success — requires all 3 blocks
   // ---------------------------------------------------------------------------
   useEffect(() => {
     if (callPhase !== 'done') return;
@@ -107,8 +103,10 @@ export function FunctionBuilder() {
   function handleCall() {
     if (callPhase === 'running' || status === 'success') return;
 
+    // Empty → robot shakes head
     if (defineBlocks.length === 0) {
       setFeedback(t('feedback_empty'));
+      setRobotShake(s => s + 1);
       return;
     }
     if (!defineBlocks.includes('jump')) {
@@ -117,6 +115,10 @@ export function FunctionBuilder() {
     }
     if (!defineBlocks.includes('spin')) {
       setFeedback(t('feedback_missing_spin'));
+      return;
+    }
+    if (!defineBlocks.includes('clap')) {
+      setFeedback(t('feedback_missing_clap'));
       return;
     }
 
@@ -137,7 +139,8 @@ export function FunctionBuilder() {
   }
 
   return (
-    <div className="flex flex-col items-center gap-6 w-full max-w-lg mx-auto px-4 py-8">
+    // Fix #3: pb-24 ensures buttons clear the phone's home-swipe bar on mobile
+    <div className="flex flex-col items-center gap-6 w-full max-w-lg mx-auto px-4 py-8 pb-24">
 
       {/* Story card */}
       <div className="card-kids border-kids-purple w-full text-center">
@@ -149,11 +152,11 @@ export function FunctionBuilder() {
         </p>
       </div>
 
-      {/* Robot */}
+      {/* Robot — shakes on empty call, animates on each step */}
       <div className="relative flex flex-col items-center">
         <motion.div
           key={robotKey}
-          initial={{ rotate: 0, scale: 1, y: 0 }}
+          // robotShake bumps this key via a separate wrapper below
           animate={
             callPhase === 'running' && animMove === 'jump'
               ? { y: [0, -40, 0] }
@@ -170,7 +173,15 @@ export function FunctionBuilder() {
           }
           className="text-8xl select-none"
         >
-          🤖
+          {/* Wrap in a shake layer keyed off robotShake */}
+          <motion.span
+            key={`shake-${robotShake}`}
+            animate={robotShake > 0 ? { x: [-12, 12, -10, 10, -6, 6, 0] } : {}}
+            transition={{ duration: 0.5 }}
+            className="inline-block"
+          >
+            🤖
+          </motion.span>
         </motion.div>
 
         {callPhase === 'running' && (
@@ -187,11 +198,14 @@ export function FunctionBuilder() {
         )}
       </div>
 
-      {/* Function define area */}
-      <div className="w-full space-y-1">
-        <p className="font-mono font-black text-kids-purple text-sm">
+      {/* ── DEFINE area ── */}
+      <div className="w-full">
+        {/* Child-friendly label (Fix #1) */}
+        <p className="font-black text-kids-purple text-base mb-2">
           {t('define_label')}
         </p>
+
+        {/* Curly-brace wrapper — glows when animation runs through it (Fix #2) */}
         <motion.div
           animate={{
             scale: defineGlow ? 1.02 : 1,
@@ -200,65 +214,82 @@ export function FunctionBuilder() {
               : '0 0 0 0px transparent',
           }}
           transition={{ type: 'spring', stiffness: 350, damping: 22 }}
-          className="rounded-2xl border-4 border-kids-purple bg-kids-purple/5 p-4 min-h-[72px]
-            flex flex-wrap gap-2 items-start"
+          className="rounded-2xl border-4 border-kids-purple bg-kids-purple/5"
         >
-          <AnimatePresence>
-            {defineBlocks.length === 0 && (
-              <motion.p
-                initial={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="text-kids-purple/40 font-bold text-sm self-center"
-              >
-                {/* empty placeholder */}
-                Click blocks below to add them here ↓
-              </motion.p>
-            )}
-            {defineBlocks.map((block, idx) => (
-              <motion.button
-                key={`${block}-${idx}`}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{
-                  scale: callPhase === 'running' && animStep === idx ? 1.15 : 1,
-                  opacity: 1,
-                  boxShadow: callPhase === 'running' && animStep === idx
-                    ? '0 0 0 3px #06D6A0'
-                    : '0 0 0 0px transparent',
-                }}
-                exit={{ scale: 0, opacity: 0 }}
-                transition={{ type: 'spring', stiffness: 380, damping: 22 }}
-                onClick={() => handleRemoveBlock(idx)}
-                disabled={callPhase === 'running' || status === 'success'}
-                className={`flex items-center gap-1 px-3 py-2 rounded-xl font-black text-sm
-                  border-4 shadow-chunky select-none cursor-pointer disabled:cursor-default
-                  ${BLOCK_COLORS[block]}`}
-              >
-                {t(BLOCK_META[block].labelKey)}
-                {callPhase === 'idle' && status !== 'success' && (
-                  <span className="ml-1 text-xs opacity-60">×</span>
-                )}
-              </motion.button>
-            ))}
-          </AnimatePresence>
+          {/* Opening brace row */}
+          <div className="px-4 pt-3 pb-1">
+            <span className="font-mono font-black text-kids-purple text-2xl">{'{'}</span>
+          </div>
+
+          {/* Block slots — indented inside the braces */}
+          <div className="px-6 pb-3 min-h-[60px] flex flex-wrap gap-2 items-center">
+            <AnimatePresence>
+              {defineBlocks.length === 0 && (
+                <motion.p
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="text-kids-purple/40 font-bold text-sm"
+                >
+                  Click blocks below to add them here ↓
+                </motion.p>
+              )}
+              {defineBlocks.map((block, idx) => (
+                <motion.button
+                  key={`${block}-${idx}`}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{
+                    scale: callPhase === 'running' && animStep === idx ? 1.2 : 1,
+                    opacity: 1,
+                    boxShadow: callPhase === 'running' && animStep === idx
+                      ? '0 0 0 4px #06D6A0, 0 0 14px rgba(6,214,160,0.6)'
+                      : '0 0 0 0px transparent',
+                  }}
+                  exit={{ scale: 0, opacity: 0 }}
+                  transition={{ type: 'spring', stiffness: 380, damping: 22 }}
+                  onClick={() => handleRemoveBlock(idx)}
+                  disabled={callPhase === 'running' || status === 'success'}
+                  className={`flex items-center gap-1 px-3 py-2 rounded-xl font-black text-sm
+                    border-4 shadow-chunky select-none cursor-pointer disabled:cursor-default
+                    ${BLOCK_COLORS[block]}`}
+                >
+                  {t(BLOCK_META[block].labelKey)}
+                  {callPhase === 'idle' && status !== 'success' && (
+                    <span className="ml-1 text-xs opacity-60">×</span>
+                  )}
+                </motion.button>
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {/* Closing brace row */}
+          <div className="px-4 pb-3 pt-1">
+            <span className="font-mono font-black text-kids-purple text-2xl">{'}'}</span>
+          </div>
         </motion.div>
-        <p className="font-mono font-black text-kids-purple text-sm">
-          {t('define_close')}
-        </p>
       </div>
 
-      {/* Call button area */}
-      <div className="w-full bg-kids-purple/10 rounded-2xl border-4 border-kids-purple/30 p-4
-        flex flex-col items-start gap-3">
-        <p className="font-mono font-black text-kids-purple text-sm">{t('call_label')}</p>
-        <motion.button
-          whileHover={callPhase !== 'running' && status !== 'success' ? { scale: 1.04 } : {}}
-          whileTap={callPhase !== 'running' && status !== 'success' ? { scale: 0.96 } : {}}
-          onClick={handleCall}
-          disabled={callPhase === 'running' || status === 'success'}
-          className="btn-chunky bg-kids-purple text-white disabled:opacity-40 disabled:cursor-not-allowed"
-        >
-          {callPhase === 'running' ? '⏳ Running…' : `⚡ ${t('call_button')}`}
-        </motion.button>
+      {/* ── CALL area — connected to define box by an arrow ── */}
+      <div className="w-full flex flex-col items-center gap-0">
+        {/* Arrow connecting define → call */}
+        <div className="flex flex-col items-center gap-0 text-kids-purple/50 font-black text-sm">
+          <span>▼</span>
+          <span className="text-xs font-bold">calls the function above</span>
+          <span>▼</span>
+        </div>
+
+        <div className="w-full bg-kids-purple/10 rounded-2xl border-4 border-kids-purple/40 p-4
+          flex flex-col items-start gap-3 mt-1">
+          <p className="font-mono font-black text-kids-purple text-base">{t('call_label')}</p>
+          <motion.button
+            whileHover={callPhase !== 'running' && status !== 'success' ? { scale: 1.04 } : {}}
+            whileTap={callPhase !== 'running' && status !== 'success' ? { scale: 0.96 } : {}}
+            onClick={handleCall}
+            disabled={callPhase === 'running' || status === 'success'}
+            className="btn-chunky bg-kids-purple text-white disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            {callPhase === 'running' ? '⏳ Running…' : `⚡ ${t('call_button')}`}
+          </motion.button>
+        </div>
       </div>
 
       {/* Block palette */}

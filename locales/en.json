@@ -77,7 +77,7 @@
     "title": "The Super Move",
     "story": "Why repeat 3 blocks when you can make one 'Function'? Name your custom move 'Mega-Jump'.",
     "instruction": "Build your Mega-Jump function, then CALL it!",
-    "define_label": "function megaJump() {",
+    "define_label": "Define your megaJump() function:",
     "define_close": "}",
     "call_label": "megaJump()",
     "block_jump": "Jump 🦘",
@@ -85,10 +85,11 @@
     "block_clap": "Clap 👏",
     "call_button": "Call Function!",
     "success": "Incredible! You defined AND called a Function!",
-    "feedback_empty": "Your function is empty! Add some moves first.",
+    "feedback_empty": "The function is empty! Give me some moves first!",
     "feedback_missing_jump": "Mega-Jump needs a Jump block!",
     "feedback_missing_spin": "Mega-Jump needs a Spin block!",
-    "hint": "Put Jump and Spin inside the function, then call it!",
+    "feedback_missing_clap": "Mega-Jump needs a Clap block too!",
+    "hint": "Put Jump, Spin and Clap inside the function, then call it!",
     "hint_button": "Hint"
   },
   "profile": {
