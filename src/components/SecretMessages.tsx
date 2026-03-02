@@ -220,13 +220,6 @@ export function SecretMessages() {
               )}
             </AnimatePresence>
           </div>
-          {result && (
-            <div className="mt-3 flex justify-center">
-              <button onClick={() => speak(result!)} className="btn-chunky bg-kids-green text-white text-sm">
-                {t('speak_button')}
-              </button>
-            </div>
-          )}
         </div>
 
         {/* join() function box */}

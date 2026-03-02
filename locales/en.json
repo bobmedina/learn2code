@@ -180,6 +180,38 @@
     "hint_button": "Hint",
     "tray_label": "Word blocks — drag into join()"
   },
+  "lesson12": {
+    "title": "The Digital Library",
+    "story": "Bleep wants to know if it's raining in Lisbon! But he can't look outside — he needs to ASK the internet.",
+    "goal": "Drag the fetchData block into the script to call the API!",
+    "script_label": "script {",
+    "script_close": "}",
+    "block_fetch": "fetchData('weather')",
+    "block_placeholder": "Drop the fetch block here",
+    "loading_label": "Fetching data…",
+    "result_sunny": "☀️ Sunny!",
+    "result_rainy": "🌧️ Rainy!",
+    "tray_label": "Code blocks 👇",
+    "run_button": "▶ Run Script",
+    "success": "Incredible! You just fetched data from an API!",
+    "hint": "Drag the fetchData block into the script box, then run it!",
+    "hint_button": "Hint",
+    "next_lesson": "Go to Lesson 13 ➡️"
+  },
+  "lesson13": {
+    "title": "The Gatekeeper",
+    "story": "Only robots with a valid ID can enter the castle. An ID is valid if it is exactly 4 characters long.",
+    "goal": "Use the Validation rule to check which robot can enter!",
+    "rule_label": "if (id.length == 4) → open_gate",
+    "test_button": "Test at gate",
+    "success": "Well done! You used Validation to protect the castle!",
+    "hint": "Only the robot with exactly 4 characters in their ID is allowed in!",
+    "hint_button": "Hint",
+    "next_lesson": "Go to Lesson 14 ➡️",
+    "gate_closed": "🔒 Gate Closed",
+    "gate_open": "✅ Gate Open!",
+    "gate_rejected": "❌ Rejected!"
+  },
   "stickerBook": {
     "title": "My Badge Collection",
     "subtitle": "Collect all 20 badges to become a Master Architect!",

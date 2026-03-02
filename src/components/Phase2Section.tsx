@@ -3,9 +3,17 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
+const PHASE2_LESSONS = [
+  { n: 11, emoji: '📻', color: 'border-kids-blue' },
+  { n: 12, emoji: '📡', color: 'border-kids-purple' },
+  { n: 13, emoji: '🏰', color: 'border-kids-orange' },
+] as const;
+
 export function Phase2Section({
   unlocked,
   lesson11Title,
+  lesson12Title,
+  lesson13Title,
   phase2Label,
   phase2Sub,
   phase2UnlockedLabel,
@@ -14,12 +22,20 @@ export function Phase2Section({
 }: {
   unlocked: boolean;
   lesson11Title: string;
+  lesson12Title: string;
+  lesson13Title: string;
   phase2Label: string;
   phase2Sub: string;
   phase2UnlockedLabel: string;
   phase2LockHint: string;
   locale: string;
 }) {
+  const titles: Record<number, string> = {
+    11: lesson11Title,
+    12: lesson12Title,
+    13: lesson13Title,
+  };
+
   return (
     <div className="mt-10 w-full max-w-3xl space-y-4">
 
@@ -37,10 +53,9 @@ export function Phase2Section({
       {/* Locked state */}
       {!unlocked && (
         <div className="relative rounded-2xl border-4 border-dashed border-gray-200 overflow-hidden">
-          {/* Greyed-out preview */}
           <div className="grayscale opacity-40 p-6">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {[11, 12, 13].map(n => (
+              {PHASE2_LESSONS.map(({ n }) => (
                 <div key={n} className="card-kids border-gray-200 bg-gray-50">
                   <div className="text-4xl mb-2">🔮</div>
                   <h2 className="text-lg font-black text-gray-400">Lesson {n}</h2>
@@ -49,7 +64,6 @@ export function Phase2Section({
               ))}
             </div>
           </div>
-          {/* Lock overlay */}
           <div className="absolute inset-0 flex flex-col items-center justify-center
             bg-white/70 backdrop-blur-sm rounded-2xl">
             <div className="text-5xl mb-3">🔒</div>
@@ -78,34 +92,23 @@ export function Phase2Section({
             <p className="font-bold text-gray-500 text-sm mt-1">{phase2Sub}</p>
           </motion.div>
 
-          {/* Lesson grid: L11 clickable + L12-13 grayed */}
+          {/* Lesson cards — all clickable */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, type: 'spring', stiffness: 340, damping: 18 }}
-            >
-              <Link
-                href={`/${locale}/lesson11`}
-                className="card-kids border-kids-blue hover:scale-105 transition-transform block"
-              >
-                <div className="text-5xl mb-3">📻</div>
-                <h2 className="text-xl font-black text-kids-purple">Lesson 11</h2>
-                <p className="text-gray-500 font-bold text-sm mt-1">{lesson11Title}</p>
-              </Link>
-            </motion.div>
-
-            {[12, 13].map((n, i) => (
+            {PHASE2_LESSONS.map(({ n, emoji, color }, i) => (
               <motion.div
                 key={n}
                 initial={{ scale: 0.85, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.3 + i * 0.08, type: 'spring', stiffness: 340, damping: 18 }}
-                className="card-kids border-gray-200 bg-gray-50 opacity-50 cursor-default select-none"
+                transition={{ delay: 0.2 + i * 0.08, type: 'spring', stiffness: 340, damping: 18 }}
               >
-                <div className="text-5xl mb-3">🔮</div>
-                <h2 className="text-xl font-black text-gray-400">Lesson {n}</h2>
-                <p className="text-gray-300 font-bold text-sm mt-1">{phase2Sub}</p>
+                <Link
+                  href={`/${locale}/lesson${n}`}
+                  className={`card-kids ${color} hover:scale-105 transition-transform block`}
+                >
+                  <div className="text-5xl mb-3">{emoji}</div>
+                  <h2 className="text-xl font-black text-kids-purple">Lesson {n}</h2>
+                  <p className="text-gray-500 font-bold text-sm mt-1">{titles[n]}</p>
+                </Link>
               </motion.div>
             ))}
           </div>

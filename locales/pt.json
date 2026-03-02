@@ -180,6 +180,38 @@
     "hint_button": "Dica",
     "tray_label": "Blocos de texto — arrasta para juntar()"
   },
+  "lesson12": {
+    "title": "A Biblioteca Digital",
+    "story": "O Bleep quer saber se está a chover em Lisboa! Mas não consegue olhar lá para fora — precisa de PERGUNTAR à internet.",
+    "goal": "Arrasta o bloco fetchData para o script para chamar a API!",
+    "script_label": "script {",
+    "script_close": "}",
+    "block_fetch": "fetchData('meteorologia')",
+    "block_placeholder": "Larga o bloco aqui",
+    "loading_label": "A procurar dados…",
+    "result_sunny": "☀️ Sol!",
+    "result_rainy": "🌧️ Chuva!",
+    "tray_label": "Blocos de código 👇",
+    "run_button": "▶ Executar Script",
+    "success": "Incrível! Pediste dados a uma API!",
+    "hint": "Arrasta o bloco fetchData para a caixa do script e depois executa-o!",
+    "hint_button": "Dica",
+    "next_lesson": "Ir para a Lição 13 ➡️"
+  },
+  "lesson13": {
+    "title": "O Porteiro do Castelo",
+    "story": "Apenas robôs com um ID válido podem entrar no castelo. Um ID é válido se tiver exatamente 4 caracteres.",
+    "goal": "Usa a regra de Validação para verificar qual robô pode entrar!",
+    "rule_label": "se (id.comprimento == 4) → abrir_portão",
+    "test_button": "Testar no portão",
+    "success": "Muito bem! Usaste Validação para proteger o castelo!",
+    "hint": "Apenas o robô com exatamente 4 caracteres no ID pode entrar!",
+    "hint_button": "Dica",
+    "next_lesson": "Ir para a Lição 14 ➡️",
+    "gate_closed": "🔒 Portão Fechado",
+    "gate_open": "✅ Portão Aberto!",
+    "gate_rejected": "❌ Rejeitado!"
+  },
   "stickerBook": {
     "title": "A Minha Coleção de Medalhas",
     "subtitle": "Coleciona todas as 20 medalhas para te tornares Mestre Arquiteto!",
