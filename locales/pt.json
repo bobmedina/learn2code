@@ -229,6 +229,23 @@
     "gravity_low": "Baixa — flutua!",
     "gravity_high": "Alta — pesado!"
   },
+  "lesson15": {
+    "title": "O Gerador de Escudos",
+    "mission": "Vem aí uma chuva de meteoros! Não temos tempo para criar 10 escudos um por um. Vamos usar um ciclo para clonar o escudo!",
+    "story": "Programar de forma inteligente significa não repetir trabalho. Vamos dizer ao Bleep para criar 10 clones do seu escudo prateado.",
+    "goal": "Arrasta o bloco clonar para dentro do ciclo repetir(10) e depois executa!",
+    "loop_label": "repetir(10)",
+    "block_clone": "clonar('escudo')",
+    "block_placeholder": "Larga o bloco aqui",
+    "run_button": "▶ Executar",
+    "loading_label": "A gerar escudos",
+    "shields_ready": "Escudos prontos!",
+    "tray_label": "Blocos de código 👇",
+    "success": "Incrível! Criaste um exército de escudos com apenas dois blocos! 🛡️✨",
+    "hint": "Arrasta o bloco clonar para dentro do ciclo repetir e depois prime Executar!",
+    "hint_button": "Dica",
+    "next_lesson": "Ir para a Lição 16 ➡️"
+  },
   "stickerBook": {
     "title": "A Minha Coleção de Medalhas",
     "subtitle": "Coleciona todas as 20 medalhas para te tornares Mestre Arquiteto!",

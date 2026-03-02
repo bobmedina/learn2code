@@ -229,6 +229,23 @@
     "gravity_low": "Low — floaty!",
     "gravity_high": "High — heavy!"
   },
+  "lesson15": {
+    "title": "The Shield Generator",
+    "mission": "A meteor shower is coming! We don't have time to build 10 shields one by one. Let's use a loop to clone the shield!",
+    "story": "Smart coding means not repeating work. Let's tell Bleep to create 10 clones of his silver shield.",
+    "goal": "Drag the clone block inside the repeat(10) loop, then run it!",
+    "loop_label": "repeat(10)",
+    "block_clone": "clone('shield')",
+    "block_placeholder": "Drop block here",
+    "run_button": "▶ Run Code",
+    "loading_label": "Generating shields",
+    "shields_ready": "Shields up!",
+    "tray_label": "Code blocks 👇",
+    "success": "Amazing! You created an army of shields with just two blocks! 🛡️✨",
+    "hint": "Drag the clone block inside the repeat loop, then press Run!",
+    "hint_button": "Hint",
+    "next_lesson": "Go to Lesson 16 ➡️"
+  },
   "stickerBook": {
     "title": "My Badge Collection",
     "subtitle": "Collect all 20 badges to become a Master Architect!",
