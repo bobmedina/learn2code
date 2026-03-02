@@ -53,6 +53,44 @@
     "feedback_need_spin": "O Bleep precisa de DAR A VOLTA! Experimenta o bloco Dar a Volta.",
     "feedback_wrong_count": "O Bleep precisa de dar a volta {count} vezes! Muda o número."
   },
+  "lesson4": {
+    "title": "As Caixas Mágicas",
+    "story": "O Bleep precisa de contar quantos Pastéis de Nata recolhe! Usa uma caixa 'Variável' para guardar o número.",
+    "instruction": "Clica em cada Pastel de Nata para o recolher. Enche a variável até 5!",
+    "box_label": "pontos",
+    "success": "Fantástico! Usaste uma Variável para contar até 5!",
+    "hint": "Clica num Pastel de Nata para o recolher!",
+    "hint_button": "Dica"
+  },
+  "lesson5": {
+    "title": "A Mochila de Aventuras",
+    "story": "O Bleep vai à praia! Ajuda-o a pôr um chapéu e protetor solar na sua 'Lista' (Array).",
+    "instruction": "Arrasta os 3 itens de praia para a mochila. Não empacotas o lixo!",
+    "backpack_label": "mochila = [",
+    "tray_label": "Escolhe itens para empacotar 👇",
+    "trash_feedback": "Isso não pertence a uma mochila!",
+    "success": "Pronto para a aventura! Usaste um Array para guardar itens!",
+    "hint": "Arrasta o chapéu, o protetor solar e a toalha — deixa o lixo!",
+    "hint_button": "Dica"
+  },
+  "lesson6": {
+    "title": "O Movimento Super",
+    "story": "Porquê repetir 3 blocos quando podes fazer uma 'Função'? Chama ao teu movimento personalizado 'Mega-Salto'.",
+    "instruction": "Cria a tua função Mega-Salto e depois CHAMA-A!",
+    "define_label": "função megaSalto() {",
+    "define_close": "}",
+    "call_label": "megaSalto()",
+    "block_jump": "Saltar 🦘",
+    "block_spin": "Girar 🔄",
+    "block_clap": "Palmas 👏",
+    "call_button": "Chamar Função!",
+    "success": "Incrível! Definiste E chamaste uma Função!",
+    "feedback_empty": "A tua função está vazia! Adiciona alguns movimentos primeiro.",
+    "feedback_missing_jump": "O Mega-Salto precisa de um bloco Saltar!",
+    "feedback_missing_spin": "O Mega-Salto precisa de um bloco Girar!",
+    "hint": "Coloca Saltar e Girar dentro da função, depois chama-a!",
+    "hint_button": "Dica"
+  },
   "profile": {
     "setupHeading": "Já quase!",
     "setupSub": "Mais um passo antes de começares a programar.",

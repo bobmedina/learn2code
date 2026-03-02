@@ -9,6 +9,9 @@ export default function HomePage({ params: { locale } }: { params: { locale: str
   const tL1 = useTranslations('lesson1');
   const tL2 = useTranslations('lesson2');
   const tL3 = useTranslations('lesson3');
+  const tL4 = useTranslations('lesson4');
+  const tL5 = useTranslations('lesson5');
+  const tL6 = useTranslations('lesson6');
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
@@ -84,6 +87,21 @@ export default function HomePage({ params: { locale } }: { params: { locale: str
             <h2 className="text-xl font-black text-kids-purple">Lesson 3</h2>
             <p className="text-gray-500 font-bold text-sm mt-1">{tL3('title')}</p>
           </Link>
+          <Link href={`/${locale}/lesson4`} className="card-kids border-kids-orange hover:scale-105 transition-transform block">
+            <div className="text-5xl mb-3">📦</div>
+            <h2 className="text-xl font-black text-kids-purple">Lesson 4</h2>
+            <p className="text-gray-500 font-bold text-sm mt-1">{tL4('title')}</p>
+          </Link>
+          <Link href={`/${locale}/lesson5`} className="card-kids border-kids-blue hover:scale-105 transition-transform block">
+            <div className="text-5xl mb-3">🎒</div>
+            <h2 className="text-xl font-black text-kids-purple">Lesson 5</h2>
+            <p className="text-gray-500 font-bold text-sm mt-1">{tL5('title')}</p>
+          </Link>
+          <Link href={`/${locale}/lesson6`} className="card-kids border-kids-purple hover:scale-105 transition-transform block">
+            <div className="text-5xl mb-3">⚡</div>
+            <h2 className="text-xl font-black text-kids-purple">Lesson 6</h2>
+            <p className="text-gray-500 font-bold text-sm mt-1">{tL6('title')}</p>
+          </Link>
         </SignedIn>
 
         <SignedOut>
@@ -105,6 +123,24 @@ export default function HomePage({ params: { locale } }: { params: { locale: str
             <h2 className="text-xl font-black text-kids-purple">Lesson 3</h2>
             <p className="text-gray-400 font-bold text-sm mt-1">{tL3('title')}</p>
             <p className="text-kids-green font-black text-xs mt-2 group-hover:underline">{ta('signIn')} →</p>
+          </Link>
+          <Link href={`/${locale}/sign-in`} className="card-kids border-kids-orange hover:scale-105 transition-transform block group">
+            <div className="text-5xl mb-3">🔒</div>
+            <h2 className="text-xl font-black text-kids-purple">Lesson 4</h2>
+            <p className="text-gray-400 font-bold text-sm mt-1">{tL4('title')}</p>
+            <p className="text-kids-orange font-black text-xs mt-2 group-hover:underline">{ta('signIn')} →</p>
+          </Link>
+          <Link href={`/${locale}/sign-in`} className="card-kids border-kids-blue hover:scale-105 transition-transform block group">
+            <div className="text-5xl mb-3">🔒</div>
+            <h2 className="text-xl font-black text-kids-purple">Lesson 5</h2>
+            <p className="text-gray-400 font-bold text-sm mt-1">{tL5('title')}</p>
+            <p className="text-kids-blue font-black text-xs mt-2 group-hover:underline">{ta('signIn')} →</p>
+          </Link>
+          <Link href={`/${locale}/sign-in`} className="card-kids border-kids-purple hover:scale-105 transition-transform block group">
+            <div className="text-5xl mb-3">🔒</div>
+            <h2 className="text-xl font-black text-kids-purple">Lesson 6</h2>
+            <p className="text-gray-400 font-bold text-sm mt-1">{tL6('title')}</p>
+            <p className="text-kids-purple font-black text-xs mt-2 group-hover:underline">{ta('signIn')} →</p>
           </Link>
         </SignedOut>
       </div>

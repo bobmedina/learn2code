@@ -53,6 +53,44 @@
     "feedback_need_spin": "Bleep needs to SPIN! Try the Spin Around block.",
     "feedback_wrong_count": "Bleep needs to spin {count} times! Change the number."
   },
+  "lesson4": {
+    "title": "The Magic Boxes",
+    "story": "Bleep needs to count how many Pastéis de Nata he collects! Use a 'Variable' box to store the number.",
+    "instruction": "Click each Pastel de Nata to collect it. Fill the variable to 5!",
+    "box_label": "score",
+    "success": "Amazing! You used a Variable to count to 5!",
+    "hint": "Click on a Pastel de Nata to collect it!",
+    "hint_button": "Hint"
+  },
+  "lesson5": {
+    "title": "The Adventure Backpack",
+    "story": "Bleep is going to the beach! Help him put a hat and sunscreen into his 'List' (Array).",
+    "instruction": "Drag the 3 beach items into the backpack. Don't pack the trash!",
+    "backpack_label": "backpack = [",
+    "tray_label": "Pick items to pack 👇",
+    "trash_feedback": "That doesn't belong in a backpack!",
+    "success": "Packed and ready! You used an Array to store items!",
+    "hint": "Drag the hat, sunscreen and towel — skip the trash!",
+    "hint_button": "Hint"
+  },
+  "lesson6": {
+    "title": "The Super Move",
+    "story": "Why repeat 3 blocks when you can make one 'Function'? Name your custom move 'Mega-Jump'.",
+    "instruction": "Build your Mega-Jump function, then CALL it!",
+    "define_label": "function megaJump() {",
+    "define_close": "}",
+    "call_label": "megaJump()",
+    "block_jump": "Jump 🦘",
+    "block_spin": "Spin 🔄",
+    "block_clap": "Clap 👏",
+    "call_button": "Call Function!",
+    "success": "Incredible! You defined AND called a Function!",
+    "feedback_empty": "Your function is empty! Add some moves first.",
+    "feedback_missing_jump": "Mega-Jump needs a Jump block!",
+    "feedback_missing_spin": "Mega-Jump needs a Spin block!",
+    "hint": "Put Jump and Spin inside the function, then call it!",
+    "hint_button": "Hint"
+  },
   "profile": {
     "setupHeading": "Almost ready!",
     "setupSub": "One last step before you start coding.",
