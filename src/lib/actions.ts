@@ -91,7 +91,33 @@ export async function createProfile(
 }
 
 // ---------------------------------------------------------------------------
-// completeLesson — unchanged
+// Badge IDs earned on completion of each lesson
+// ---------------------------------------------------------------------------
+const LESSON_BADGES: Record<number, string> = {
+  1:  'chef_logic',
+  2:  'weather_wizard',
+  3:  'loop_dancer',
+  4:  'magic_box',
+  5:  'backpack_pro',
+  6:  'func_hero',
+  7:  'click_master',
+  8:  'bug_detective',
+  9:  'map_explorer',
+  10: 'game_master',
+  11: 'secret_coder',
+  12: 'data_librarian',
+  13: 'castle_guard',
+  14: 'moon_jumper',
+  15: 'clone_commander',
+  16: 'race_driver',
+  17: 'ai_trainer',
+  18: 'logic_path',
+  19: 'world_builder',
+  20: 'master_architect',
+};
+
+// ---------------------------------------------------------------------------
+// completeLesson — awards +100 points and the lesson badge (first time only)
 // ---------------------------------------------------------------------------
 export async function completeLesson(lessonNumber: number, stickerId: string) {
   const { userId } = await auth();
@@ -101,20 +127,67 @@ export async function completeLesson(lessonNumber: number, stickerId: string) {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('current_lesson, unlocked_stickers')
+    .select('current_lesson, unlocked_stickers, points, badges')
     .eq('id', userId)
     .maybeSingle();
 
   if (!profile) return;
 
-  const newStickers = profile.unlocked_stickers.includes(stickerId)
-    ? profile.unlocked_stickers
-    : [...profile.unlocked_stickers, stickerId];
+  // Stickers (used for lesson-completion animation)
+  const newStickers = (profile.unlocked_stickers ?? []).includes(stickerId)
+    ? (profile.unlocked_stickers ?? [])
+    : [...(profile.unlocked_stickers ?? []), stickerId];
 
-  const newLesson = Math.max(profile.current_lesson, lessonNumber + 1);
+  // Only advance lesson number and award points the first time
+  const alreadyCompleted = profile.current_lesson > lessonNumber;
+  const newLesson  = Math.max(profile.current_lesson, lessonNumber + 1);
+  const newPoints  = alreadyCompleted ? (profile.points ?? 0) : (profile.points ?? 0) + 100;
+
+  // Badges — append if not already earned
+  const badgeId       = LESSON_BADGES[lessonNumber];
+  const existingBadges = profile.badges ?? [];
+  const newBadges = badgeId && !existingBadges.includes(badgeId)
+    ? [...existingBadges, badgeId]
+    : existingBadges;
 
   await supabase
     .from('profiles')
-    .update({ current_lesson: newLesson, unlocked_stickers: newStickers })
+    .update({
+      current_lesson:    newLesson,
+      unlocked_stickers: newStickers,
+      points:            newPoints,
+      badges:            newBadges,
+    })
     .eq('id', userId);
+}
+
+// ---------------------------------------------------------------------------
+// getUserProfileData — read-only stats fetch for UI components
+// Returns null when not signed in or profile not found
+// ---------------------------------------------------------------------------
+export async function getUserProfileData(): Promise<{
+  current_lesson: number;
+  points: number;
+  badges: string[];
+} | null> {
+  try {
+    const { userId } = await auth();
+    if (!userId) return null;
+
+    const supabase = createServerSupabaseClient();
+    const { data } = await supabase
+      .from('profiles')
+      .select('current_lesson, points, badges')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (!data) return null;
+    return {
+      current_lesson: data.current_lesson ?? 1,
+      points:         data.points         ?? 0,
+      badges:         data.badges         ?? [],
+    };
+  } catch {
+    return null;
+  }
 }

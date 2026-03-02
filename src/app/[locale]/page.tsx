@@ -2,8 +2,10 @@ import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { UserStats } from '@/components/UserStats';
+import { getUserProfileData } from '@/lib/actions';
 
-export default function HomePage({ params: { locale } }: { params: { locale: string } }) {
+export default async function HomePage({ params: { locale } }: { params: { locale: string } }) {
   const t   = useTranslations('home');
   const ta  = useTranslations('auth');
   const tL1 = useTranslations('lesson1');
@@ -13,11 +15,22 @@ export default function HomePage({ params: { locale } }: { params: { locale: str
   const tL5 = useTranslations('lesson5');
   const tL6 = useTranslations('lesson6');
 
+  // Fetch stats server-side; null when not signed in or migration not yet applied
+  const stats = await getUserProfileData();
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
 
       {/* Top bar */}
       <div className="absolute top-4 right-4 flex items-center gap-3">
+        {/* Points + level widget (only shown when signed in and profile exists) */}
+        {stats && (
+          <UserStats
+            points={stats.points}
+            currentLesson={stats.current_lesson}
+            locale={locale}
+          />
+        )}
         <SignedIn>
           <UserButton
             afterSignOutUrl={`/${locale}`}
@@ -59,11 +72,18 @@ export default function HomePage({ params: { locale } }: { params: { locale: str
         </SignedOut>
 
         <SignedIn>
-          <Link href={`/${locale}/lesson1`}>
-            <button className="btn-chunky bg-kids-yellow text-kids-purple text-2xl">
-              {t('startButton')} 🚀
-            </button>
-          </Link>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link href={`/${locale}/lesson1`}>
+              <button className="btn-chunky bg-kids-yellow text-kids-purple text-2xl">
+                {t('startButton')} 🚀
+              </button>
+            </Link>
+            <Link href={`/${locale}/sticker-book`}>
+              <button className="btn-chunky bg-white text-kids-purple border-4 border-kids-purple text-xl">
+                🏅 My Badges
+              </button>
+            </Link>
+          </div>
         </SignedIn>
       </div>
 

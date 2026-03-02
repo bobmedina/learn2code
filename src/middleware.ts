@@ -16,6 +16,7 @@ const isAuthRequired = createRouteMatcher([
   '/:locale/lesson(.*)',
   '/:locale/setup-profile',
   '/:locale/waiting-room',
+  '/:locale/sticker-book',
 ]);
 
 // Routes that also need is_approved = true
