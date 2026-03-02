@@ -184,7 +184,7 @@
     "title": "The Digital Library",
     "story": "Bleep wants to know if it's raining in Lisbon! But he can't look outside — he needs to ASK the internet.",
     "goal": "Drag the fetchData block into the script to call the API!",
-    "script_label": "script {",
+    "script_label": "Bleep's Script",
     "script_close": "}",
     "block_fetch": "fetchData('weather')",
     "block_placeholder": "Drop the fetch block here",
@@ -211,6 +211,23 @@
     "gate_closed": "🔒 Gate Closed",
     "gate_open": "✅ Gate Open!",
     "gate_rejected": "❌ Rejected!"
+  },
+  "lesson14": {
+    "title": "The Moon Jump",
+    "story": "Bleep is on the Moon! Gravity is weak here. Can you change the 'Gravity' variable so Bleep can jump over the giant crater?",
+    "goal": "Set Gravity to '2' to jump high, or '10' to stay on the ground.",
+    "gravity_label": "gravity",
+    "jump_button": "Jump! 🚀",
+    "reset_button": "Reset",
+    "clear_feedback": "Amazing! Low gravity = high jump! Bleep cleared the crater!",
+    "fail_feedback": "Too much gravity! Bleep fell in. Lower the gravity and try again!",
+    "success": "Incredible! You understand how a Constant changes the whole world!",
+    "hint": "Set gravity to 4 or lower, then press Jump!",
+    "hint_button": "Hint",
+    "next_lesson": "Go to Lesson 15 ➡️",
+    "crater_label": "CRATER",
+    "gravity_low": "Low — floaty!",
+    "gravity_high": "High — heavy!"
   },
   "stickerBook": {
     "title": "My Badge Collection",

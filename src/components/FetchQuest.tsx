@@ -205,7 +205,7 @@ export function FetchQuest() {
         {/* Script box */}
         <div className="w-full space-y-2">
           <div className="bg-kids-blue rounded-xl px-4 py-2 inline-block">
-            <span className="font-mono font-black text-white text-base">{t('script_label')}</span>
+            <span className="font-mono font-black text-white text-base">{t('script_label')} {'{'}</span>
           </div>
           <div className="rounded-2xl border-4 border-kids-blue bg-kids-blue/5 p-5">
             <ScriptSlot
@@ -215,7 +215,7 @@ export function FetchQuest() {
             />
           </div>
           <div className="bg-kids-blue rounded-xl px-4 py-2 inline-block">
-            <span className="font-mono font-black text-white text-base">{t('script_close')}</span>
+            <span className="font-mono font-black text-white text-base">{'}'}</span>
           </div>
         </div>
 

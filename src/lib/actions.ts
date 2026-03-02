@@ -107,6 +107,7 @@ const STICKER_TO_BADGE: Record<string, string> = {
   'sticker-secret_coder':   'secret_coder',
   'sticker-data_librarian': 'data_librarian',
   'sticker-castle_guard':   'castle_guard',
+  'sticker-moon_jumper':    'moon_jumper',
 };
 
 // ---------------------------------------------------------------------------

@@ -184,7 +184,7 @@
     "title": "A Biblioteca Digital",
     "story": "O Bleep quer saber se está a chover em Lisboa! Mas não consegue olhar lá para fora — precisa de PERGUNTAR à internet.",
     "goal": "Arrasta o bloco fetchData para o script para chamar a API!",
-    "script_label": "script {",
+    "script_label": "O Script do Bleep",
     "script_close": "}",
     "block_fetch": "fetchData('meteorologia')",
     "block_placeholder": "Larga o bloco aqui",
@@ -211,6 +211,23 @@
     "gate_closed": "🔒 Portão Fechado",
     "gate_open": "✅ Portão Aberto!",
     "gate_rejected": "❌ Rejeitado!"
+  },
+  "lesson14": {
+    "title": "O Salto na Lua",
+    "story": "O Bleep está na Lua! A gravidade aqui é fraca. Consegues mudar a variável 'Gravidade' para o Bleep saltar a cratera gigante?",
+    "goal": "Define a Gravidade para '2' para saltar alto, ou '10' para ficar no chão.",
+    "gravity_label": "gravidade",
+    "jump_button": "Saltar! 🚀",
+    "reset_button": "Reiniciar",
+    "clear_feedback": "Incrível! Gravidade baixa = salto alto! O Bleep saltou a cratera!",
+    "fail_feedback": "Demasiada gravidade! O Bleep caiu. Baixa a Gravidade e tenta outra vez!",
+    "success": "Incrível! Percebes como uma Constante muda o mundo inteiro!",
+    "hint": "Define a gravidade para 4 ou menos e prime Saltar!",
+    "hint_button": "Dica",
+    "next_lesson": "Ir para a Lição 15 ➡️",
+    "crater_label": "CRATERA",
+    "gravity_low": "Baixa — flutua!",
+    "gravity_high": "Alta — pesado!"
   },
   "stickerBook": {
     "title": "A Minha Coleção de Medalhas",
