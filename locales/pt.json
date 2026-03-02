@@ -54,10 +54,8 @@
     "feedback_wrong_count": "O Bleep precisa de dar a volta {count} vezes! Muda o número."
   },
   "profile": {
-    "setupHeading": "Cria o teu perfil de jogador!",
-    "setupSub": "Diz-nos um pouco sobre ti para começarmos.",
-    "displayNameLabel": "O teu nome de jogador",
-    "displayNamePlaceholder": "ex. EstrelaDoCódigo42",
+    "setupHeading": "Já quase!",
+    "setupSub": "Mais um passo antes de começares a programar.",
     "parentEmailLabel": "Email do pai, mãe ou tutor",
     "parentEmailPlaceholder": "pai@exemplo.com",
     "parentEmailHelp": "Vamos enviar-lhes um email rápido a dizer que estás pronto para programar!",

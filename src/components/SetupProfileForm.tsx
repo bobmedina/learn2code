@@ -22,6 +22,7 @@ function SubmitButton({ label }: { label: string }) {
 export function SetupProfileForm({ locale }: { locale: string }) {
   const t = useTranslations('profile');
   const tAge = useTranslations('ageGate');
+  // display_name is now auto-derived from the Clerk account in the server action
   const [state, action] = useFormState(createProfile, { error: null });
   const [ageConfirmed, setAgeConfirmed] = useState<boolean | null>(null);
 
@@ -50,24 +51,7 @@ export function SetupProfileForm({ locale }: { locale: string }) {
         </div>
       )}
 
-      <div className="space-y-1">
-        <label htmlFor="displayName" className="font-black text-gray-600 text-sm block">
-          {t('displayNameLabel')}
-        </label>
-        <input
-          id="displayName"
-          name="displayName"
-          type="text"
-          required
-          minLength={2}
-          maxLength={30}
-          placeholder={t('displayNamePlaceholder')}
-          className="w-full rounded-xl border-4 border-gray-200 focus:border-kids-purple
-                     outline-none font-bold text-lg px-4 py-3 transition-colors"
-        />
-      </div>
-
-      {/* Parent email — only shown when the user did NOT confirm they are 13+ */}
+      {/* Parent email — only shown when the user did NOT confirm they are 16+ */}
       {!ageConfirmed && (
         <div className="space-y-1">
           <label htmlFor="parentEmail" className="font-black text-gray-600 text-sm block">

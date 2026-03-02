@@ -54,10 +54,8 @@
     "feedback_wrong_count": "Bleep needs to spin {count} times! Change the number."
   },
   "profile": {
-    "setupHeading": "Create your player profile!",
-    "setupSub": "Tell us a bit about you so we can get started.",
-    "displayNameLabel": "Your nickname",
-    "displayNamePlaceholder": "e.g. CodeStar42",
+    "setupHeading": "Almost ready!",
+    "setupSub": "One last step before you start coding.",
     "parentEmailLabel": "Parent or guardian's email",
     "parentEmailPlaceholder": "parent@example.com",
     "parentEmailHelp": "We'll send them a quick email to say you're ready to code!",

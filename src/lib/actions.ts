@@ -1,6 +1,6 @@
 'use server';
 
-import { auth } from '@clerk/nextjs/server';
+import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { createServerSupabaseClient } from './supabase';
 import { sendApprovalEmail } from './email';
@@ -20,7 +20,13 @@ export async function createProfile(
   const { userId } = await auth();
   if (!userId) return { error: 'Not signed in. Please refresh and try again.' };
 
-  const displayName  = (formData.get('displayName')  as string).trim();
+  const clerkUser    = await currentUser();
+  const displayName  = (
+    clerkUser?.firstName ||
+    clerkUser?.username ||
+    clerkUser?.emailAddresses[0]?.emailAddress?.split('@')[0] ||
+    'Coder'
+  ).trim();
   const parentEmail  = ((formData.get('parentEmail')  as string) ?? '').trim();
   const locale       = (formData.get('locale')        as string) || 'en';
   const ageVerified  = formData.get('ageVerified') === 'true';
