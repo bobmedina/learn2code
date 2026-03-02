@@ -19,26 +19,26 @@ let nextId = 0;
 // ---------------------------------------------------------------------------
 // Code panel — shows the running loop with highlight
 // ---------------------------------------------------------------------------
-function CodePanel({ catching, t }: { catching: boolean; t: ReturnType<typeof useTranslations> }) {
+function CodePanel({ catching }: { catching: boolean }) {
   return (
     <div className="w-full bg-gray-900 rounded-2xl p-4 font-mono text-sm space-y-1">
-      <p className="text-kids-purple font-black">{t('code_repeat')}</p>
+      <p className="text-kids-purple font-black">repeat_forever {'{'}</p>
       <motion.p
         animate={{ backgroundColor: catching ? 'rgba(6,214,160,0.25)' : 'transparent' }}
         transition={{ duration: 0.2 }}
-        className="text-kids-yellow font-black rounded px-1"
+        className="text-kids-yellow font-black rounded px-1 ml-4"
       >
-        {t('code_if')}
+        if (bleep_touches_star) {'{'}
       </motion.p>
       <motion.p
         animate={{ backgroundColor: catching ? 'rgba(6,214,160,0.25)' : 'transparent' }}
         transition={{ duration: 0.2, delay: 0.1 }}
-        className="text-kids-green font-black rounded px-1"
+        className="text-kids-green font-black rounded px-1 ml-8"
       >
-        {t('code_score')}
+        score = score + 1;
       </motion.p>
-      <p className="text-kids-yellow font-black">{t('code_close')}</p>
-      <p className="text-kids-purple font-black">{t('code_end')}</p>
+      <p className="text-kids-yellow font-black ml-4">{'}'}</p>
+      <p className="text-kids-purple font-black">{'}'}</p>
     </div>
   );
 }
@@ -190,7 +190,7 @@ export function StarCatcher() {
         </div>
 
         {/* Code panel */}
-        <CodePanel catching={catching} t={t} />
+        <CodePanel catching={catching} />
       </div>
 
       {/* Game grid */}
