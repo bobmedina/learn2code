@@ -74,7 +74,7 @@
     "hint_button": "Dica"
   },
   "lesson6": {
-    "title": "O Movimento Super",
+    "title": "O Super-Movimento",
     "story": "Porquê repetir 3 blocos quando podes fazer uma 'Função'? Chama ao teu movimento personalizado 'Mega-Salto'.",
     "instruction": "Cria a tua função Mega-Salto e depois CHAMA-A!",
     "define_label": "Define a tua função megaJump():",
