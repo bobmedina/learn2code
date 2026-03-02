@@ -79,19 +79,46 @@ export function EventListener() {
 
       {/* Robot */}
       <div className="flex flex-col items-center relative">
+
+        {/* Zzz bubble — floats up while sleeping */}
+        <AnimatePresence>
+          {!eventBlock && !animMove && status !== 'success' && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute -top-8 right-1 pointer-events-none"
+            >
+              <motion.span
+                animate={{ y: [-2, -16, -2], opacity: [0.5, 1, 0.5] }}
+                transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                className="font-black text-kids-blue text-xl block"
+              >
+                Zzz
+              </motion.span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <motion.div
           key={robotKey}
           animate={
-            animMove === 'jump' ? { y: [0, -50, 0] }
-            : animMove === 'spin' ? { rotate: 360 }
-            : animMove === 'clap' ? { scale: [1, 0.8, 1.3, 1] }
-            : {}
+            animMove === 'jump' ? { y: [0, -50, 0], opacity: 1 }
+            : animMove === 'spin' ? { rotate: 360, opacity: 1 }
+            : animMove === 'clap' ? { scale: [1, 0.8, 1.3, 1], opacity: 1 }
+            : !eventBlock ? { scale: [1, 0.96, 1], opacity: 0.55 }
+            : { scale: 1, opacity: 1 }
           }
-          transition={animMove === 'spin' ? { duration: 0.55 } : { duration: 0.6 }}
+          transition={
+            animMove === 'spin' ? { duration: 0.55 }
+            : !eventBlock && !animMove ? { repeat: Infinity, duration: 3, ease: 'easeInOut' }
+            : { duration: 0.5 }
+          }
           className="text-8xl select-none"
         >
-          {status === 'idle' && !animMove ? '😴' : '🤖'}
+          🤖
         </motion.div>
+
         {animMove && (
           <motion.p
             key={`label-${robotKey}`}
@@ -143,12 +170,12 @@ export function EventListener() {
         </div>
       </div>
 
-      {/* Space button */}
+      {/* Space button — disabled until a block is placed */}
       <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={eventBlock && status !== 'success' ? { scale: 1.05 } : {}}
+        whileTap={eventBlock && status !== 'success' ? { scale: 0.95 } : {}}
         onClick={handleTrigger}
-        disabled={status === 'success'}
+        disabled={!eventBlock || status === 'success'}
         className="btn-chunky bg-kids-red text-white text-xl disabled:opacity-40 w-full max-w-xs"
       >
         {t('test_button')}
