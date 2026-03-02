@@ -91,6 +91,18 @@ export async function createProfile(
 }
 
 // ---------------------------------------------------------------------------
+// Sticker ID → badge ID (backfill: unlocked_stickers populated before migration 003)
+// ---------------------------------------------------------------------------
+const STICKER_TO_BADGE: Record<string, string> = {
+  'sticker-algorithm': 'chef_logic',
+  'sticker-logic':     'weather_wizard',
+  'sticker-loop':      'loop_dancer',
+  'sticker-variable':  'magic_box',
+  'sticker-array':     'backpack_pro',
+  'sticker-function':  'func_hero',
+};
+
+// ---------------------------------------------------------------------------
 // Badge IDs earned on completion of each lesson
 // ---------------------------------------------------------------------------
 const LESSON_BADGES: Record<number, string> = {
@@ -163,31 +175,67 @@ export async function completeLesson(lessonNumber: number, stickerId: string) {
 
 // ---------------------------------------------------------------------------
 // getUserProfileData — read-only stats fetch for UI components
-// Returns null when not signed in or profile not found
+//
+// Badge resolution order (most to least preferred):
+//   1. badges[]  column (populated going forward after migration 003)
+//   2. unlocked_stickers[] converted via STICKER_TO_BADGE (lessons completed
+//      before migration 003 was applied)
+//
+// Falls back to a minimal select if migration 003 hasn't been run yet, so
+// the app never white-screens just because a migration is pending.
 // ---------------------------------------------------------------------------
 export async function getUserProfileData(): Promise<{
   current_lesson: number;
   points: number;
   badges: string[];
 } | null> {
-  try {
-    const { userId } = await auth();
-    if (!userId) return null;
+  const { userId } = await auth();
+  if (!userId) return null;
 
-    const supabase = createServerSupabaseClient();
+  const supabase = createServerSupabaseClient();
+
+  // Try full select first (requires migration 003)
+  try {
     const { data } = await supabase
       .from('profiles')
-      .select('current_lesson, points, badges')
+      .select('current_lesson, unlocked_stickers, points, badges')
       .eq('id', userId)
       .maybeSingle();
 
     if (!data) return null;
+
+    // Prefer badges[] but fall back to deriving from unlocked_stickers
+    const rawBadges: string[] = data.badges ?? [];
+    const badges = rawBadges.length > 0
+      ? rawBadges
+      : (data.unlocked_stickers ?? [])
+          .map((s: string) => STICKER_TO_BADGE[s])
+          .filter(Boolean);
+
     return {
       current_lesson: data.current_lesson ?? 1,
       points:         data.points         ?? 0,
-      badges:         data.badges         ?? [],
+      badges,
     };
   } catch {
-    return null;
+    // Migration 003 not applied yet — fall back to migration 001 columns only
+    try {
+      const { data } = await supabase
+        .from('profiles')
+        .select('current_lesson, unlocked_stickers')
+        .eq('id', userId)
+        .maybeSingle();
+
+      if (!data) return null;
+      return {
+        current_lesson: data.current_lesson ?? 1,
+        points:         0,
+        badges:         (data.unlocked_stickers ?? [])
+                          .map((s: string) => STICKER_TO_BADGE[s])
+                          .filter(Boolean),
+      };
+    } catch {
+      return null;
+    }
   }
 }
