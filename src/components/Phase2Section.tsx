@@ -9,6 +9,7 @@ const PHASE2_LESSONS = [
   { n: 13, emoji: '🏰', color: 'border-kids-orange' },
   { n: 14, emoji: '🌙', color: 'border-kids-blue' },
   { n: 15, emoji: '🛡️', color: 'border-kids-purple' },
+  { n: 16, emoji: '🚀', color: 'border-kids-yellow' },
 ] as const;
 
 export function Phase2Section({
@@ -18,6 +19,7 @@ export function Phase2Section({
   lesson13Title,
   lesson14Title,
   lesson15Title,
+  lesson16Title,
   phase2Label,
   phase2Sub,
   phase2UnlockedLabel,
@@ -30,6 +32,7 @@ export function Phase2Section({
   lesson13Title: string;
   lesson14Title: string;
   lesson15Title: string;
+  lesson16Title: string;
   phase2Label: string;
   phase2Sub: string;
   phase2UnlockedLabel: string;
@@ -42,6 +45,7 @@ export function Phase2Section({
     13: lesson13Title,
     14: lesson14Title,
     15: lesson15Title,
+    16: lesson16Title,
   };
 
   return (

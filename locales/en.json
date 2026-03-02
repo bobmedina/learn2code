@@ -246,6 +246,22 @@
     "hint_button": "Hint",
     "next_lesson": "Go to Lesson 16 ➡️"
   },
+  "lesson16": {
+    "title": "The Turbo Booster",
+    "story": "Bleep's rocket is stuck on the launch pad! Set the X and Y velocity to blast it to the space portal!",
+    "goal": "Set BOTH velocities and hit the 🌀 portal to win!",
+    "vel_x_label": "Power Right (vX)",
+    "vel_y_label": "Power Up (vY)",
+    "ignite_button": "Ignite 🚀",
+    "reset_button": "↩ Reset",
+    "success_hit": "Direct hit! 🌀",
+    "fail_miss": "So close! Adjust your aim!",
+    "hint_diagonal": "Give the rocket power in BOTH X and Y directions!",
+    "success": "🚀 You mastered 2D Velocity! The rocket found the portal!",
+    "hint": "Set both sliders to 7 or higher, then Ignite!",
+    "hint_button": "Hint",
+    "next_lesson": "Go to Lesson 17 ➡️"
+  },
   "stickerBook": {
     "title": "My Badge Collection",
     "subtitle": "Collect all 20 badges to become a Master Architect!",

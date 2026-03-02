@@ -109,6 +109,7 @@ const STICKER_TO_BADGE: Record<string, string> = {
   'sticker-castle_guard':   'castle_guard',
   'sticker-moon_jumper':      'moon_jumper',
   'sticker-clone_commander':  'clone_commander',
+  'sticker-race_driver':      'race_driver',
 };
 
 // ---------------------------------------------------------------------------

@@ -246,6 +246,22 @@
     "hint_button": "Dica",
     "next_lesson": "Ir para a Lição 16 ➡️"
   },
+  "lesson16": {
+    "title": "O Propulsor Turbo",
+    "story": "O foguetão do Bleep está preso na plataforma de lançamento! Define a velocidade X e Y para o enviar ao portal espacial!",
+    "goal": "Define AS DUAS velocidades e acerta no portal 🌀 para ganhar!",
+    "vel_x_label": "Força para a Direita (vX)",
+    "vel_y_label": "Força para Cima (vY)",
+    "ignite_button": "Lançar 🚀",
+    "reset_button": "↩ Reiniciar",
+    "success_hit": "Acerto direto! 🌀",
+    "fail_miss": "Tão perto! Ajusta a mira!",
+    "hint_diagonal": "Dá ao foguetão potência nas direções X E Y ao mesmo tempo!",
+    "success": "🚀 Dominaste a Velocidade 2D! O foguetão encontrou o portal!",
+    "hint": "Define os dois sliders para 7 ou mais, depois Lança!",
+    "hint_button": "Dica",
+    "next_lesson": "Ir para a Lição 17 ➡️"
+  },
   "stickerBook": {
     "title": "A Minha Coleção de Medalhas",
     "subtitle": "Coleciona todas as 20 medalhas para te tornares Mestre Arquiteto!",
