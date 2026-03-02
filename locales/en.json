@@ -69,6 +69,13 @@
     "subMessage": "Once they say yes, come back and click a lesson!",
     "homeButton": "Back to Home"
   },
+  "ageGate": {
+    "heading": "Privacy & Protection",
+    "body": "We need to verify your age before you create an account. If you are under 16 years of age, your parent or guardian will be asked to give their consent on the next page. We do not share your data with third parties.",
+    "checkboxLabel": "I confirm I am over 16 years of age. If you are under 16 years of age, you will be asked to provide parental consent on the next page.",
+    "continueButton": "Continue",
+    "ageVerifiedNote": "You confirmed you are 16 or older — no parental consent needed!"
+  },
   "auth": {
     "signIn": "Sign In",
     "signUp": "Sign Up",

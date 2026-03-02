@@ -20,9 +20,10 @@ export async function createProfile(
   const { userId } = await auth();
   if (!userId) return { error: 'Not signed in. Please refresh and try again.' };
 
-  const displayName = (formData.get('displayName') as string).trim();
-  const parentEmail = (formData.get('parentEmail') as string).trim();
-  const locale      = (formData.get('locale')      as string) || 'en';
+  const displayName  = (formData.get('displayName')  as string).trim();
+  const parentEmail  = ((formData.get('parentEmail')  as string) ?? '').trim();
+  const locale       = (formData.get('locale')        as string) || 'en';
+  const ageVerified  = formData.get('ageVerified') === 'true';
 
   const supabase = createServerSupabaseClient();
 
@@ -38,22 +39,27 @@ export async function createProfile(
     return { error: `Database error: ${selectError.message}` };
   }
 
-  let token: string | null = null;
-
-  if (existing?.is_approved) {
-    // Already approved — nickname update only
-    const { error } = await supabase
-      .from('profiles')
-      .update({ display_name: displayName })
-      .eq('id', userId);
+  if (existing?.is_approved || ageVerified) {
+    // Already approved OR user self-declared 13+ — save nickname and go straight to lessons
+    const { error } = existing
+      ? await supabase.from('profiles').update({ display_name: displayName }).eq('id', userId)
+      : await supabase.from('profiles').insert({
+          id: userId,
+          display_name: displayName,
+          parent_email: null,
+          approval_token: null,
+          is_approved: true,
+        });
 
     if (error) {
-      console.error('[createProfile] update error:', error);
+      console.error('[createProfile] write error (age-verified):', error);
       return { error: `Could not save: ${error.message}` };
     }
+
+    redirect(`/${locale}`);
   } else {
-    // New user OR not yet approved — save/update and send email
-    token = crypto.randomUUID();
+    // New user OR not yet approved — save/update and send parent email
+    const token = crypto.randomUUID();
 
     const dbPayload = { display_name: displayName, parent_email: parentEmail, approval_token: token };
 
@@ -63,7 +69,6 @@ export async function createProfile(
 
     if (error) {
       console.error('[createProfile] write error:', error);
-      // Surface a helpful hint for the most common mistake
       const hint = error.message.includes('approval_token')
         ? ' (Have you run migration 002_approval_token.sql in Supabase?)'
         : '';

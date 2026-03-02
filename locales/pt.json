@@ -69,6 +69,13 @@
     "subMessage": "Assim que disserem que sim, volta aqui e clica numa lição!",
     "homeButton": "Voltar ao Início"
   },
+  "ageGate": {
+    "heading": "Proteção e Privacidade",
+    "body": "De acordo com a nova Lei de Proteção de Menores no Espaço Digital (2026), precisamos de verificar a tua idade. Se tens menos de 16 anos, o teu encarregado de educação terá de autorizar a criação da conta através de um link seguro enviado por e-mail. Não partilhamos os teus dados com terceiros e focamo-nos apenas na tua aprendizagem.",
+    "checkboxLabel": "Confirmo que tenho mais de 16 anos de idade. Se tiveres menos de 16 anos, ser-te-á pedido o consentimento do encarregado de educação na página seguinte.",
+    "continueButton": "Continuar",
+    "ageVerifiedNote": "Confirmaste que tens mais de 16 anos — não é necessário o consentimento parental!"
+  },
   "auth": {
     "signIn": "Entrar",
     "signUp": "Registar",

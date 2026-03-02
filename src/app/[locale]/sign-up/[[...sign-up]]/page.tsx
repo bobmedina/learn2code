@@ -1,6 +1,6 @@
-import { SignUp } from '@clerk/nextjs';
 import { useTranslations } from 'next-intl';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { AgeGate } from '@/components/AgeGate';
 import Link from 'next/link';
 
 export default function SignUpPage({ params: { locale } }: { params: { locale: string } }) {
@@ -25,27 +25,7 @@ export default function SignUpPage({ params: { locale } }: { params: { locale: s
         <p className="text-lg font-bold text-gray-500">{t('signUpSub')}</p>
       </div>
 
-      <SignUp
-        path={`/${locale}/sign-up`}
-        signInUrl={`/${locale}/sign-in`}
-        fallbackRedirectUrl={`/${locale}/setup-profile`}
-        appearance={{
-          elements: {
-            rootBox: 'w-full flex justify-center',
-            card: 'shadow-xl rounded-2xl border-4 border-kids-yellow w-full max-w-md',
-            headerTitle: 'font-black text-kids-purple text-2xl',
-            headerSubtitle: 'font-bold text-gray-500',
-            formButtonPrimary:
-              'btn-chunky bg-kids-yellow text-kids-purple w-full normal-case text-base',
-            footerActionLink: 'text-kids-purple font-black hover:underline',
-            formFieldInput:
-              'rounded-xl border-2 border-gray-200 focus:border-kids-yellow font-bold text-base px-4 py-3',
-            formFieldLabel: 'font-black text-gray-600 text-sm',
-            socialButtonsBlockButton:
-              'rounded-xl border-2 border-gray-200 font-bold hover:border-kids-yellow transition-colors',
-          },
-        }}
-      />
+      <AgeGate locale={locale} />
     </main>
   );
 }
