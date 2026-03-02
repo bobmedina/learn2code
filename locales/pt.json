@@ -231,22 +231,18 @@
   },
   "lesson15": {
     "title": "O Gerador de Escudos",
-    "mission": "10 meteoros estão a cair em toda a arena! Um ciclo de clones não chega se todos os escudos ficarem no mesmo sítio.",
-    "goal": "Arrasta 'índice × 40' para o ciclo — cada clone anda 40 px para a direita, construindo um muro real!",
+    "mission": "10 meteoros estão a caminho do planeta do Bleep! Constrói um muro de escudos para os parar!",
+    "goal": "Faz o Bleep colocar 10 escudos seguidos para bloquear os meteoros!",
     "loop_label": "repetir(10)",
-    "block_index": "índice × 40",
-    "block_forty": "40",
-    "block_placeholder": "arrasta posição X aqui",
-    "index_tip": "índice = o número do clone: 0, 1, 2, 3 …",
+    "block_clone": "clonar('escudo')",
+    "block_move": "mover_direita(40)",
+    "clone_placeholder": "arrasta clone aqui",
+    "move_placeholder": "arrasta mover aqui",
     "run_button": "▶ Executar",
-    "loading_label": "A gerar escudos",
+    "loading_label": "A construir muro",
     "shields_ready": "Muro completo! ✅",
-    "shields_stacked": "Todos empilhados! 😱",
-    "stacked_hint": "Todos os 10 escudos ficaram no mesmo sítio! Troca '40' por 'índice × 40' para os espalhar.",
-    "tray_label": "Blocos de posição X 👇",
-    "try_again": "↩ Tentar de Novo",
-    "success": "Brilhante! Usaste a 'Posição' para espalhar os teus clones. Agora sim, um verdadeiro muro de defesa! 🛡️🛰️",
-    "hint": "Arrasta 'índice × 40' para o ciclo. Clone 0 → X=0, clone 1 → X=40, clone 2 → X=80…",
+    "success": "Excelente! Usaste um Loop para criar uma barreira defensiva! 🛡️🚀",
+    "hint": "Dica: Primeiro coloca o escudo, depois move o Bleep para o lado!",
     "hint_button": "Dica",
     "next_lesson": "Ir para a Lição 16 ➡️"
   },
@@ -344,6 +340,7 @@
     "phase2_label": "Fase 2 — Aventuras Avançadas",
     "phase2_sub": "Variáveis, Matemática, IA e muito mais",
     "phase2_unlocked": "Fase 2 Desbloqueada!",
-    "phase2_lock_hint": "Completa a Fase 1 para desbloquear!"
+    "phase2_lock_hint": "Completa a Fase 1 para desbloquear!",
+    "myBadges": "Os Meus Crachás"
   }
 }

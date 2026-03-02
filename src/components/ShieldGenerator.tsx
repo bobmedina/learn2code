@@ -13,37 +13,33 @@ import {
 import { completeLesson } from '@/lib/actions';
 
 const SHIELD_COUNT = 10;
-const METEOR_COUNT = 8;
 
-// Meteor columns spread evenly across the arena
-const METEOR_COLS = Array.from({ length: METEOR_COUNT }, (_, i) =>
-  `${5 + Math.round(i * (90 / (METEOR_COUNT - 1)))}%`
+// 8 meteor columns spread evenly across the arena
+const METEOR_COLS = Array.from({ length: 8 }, (_, i) =>
+  `${5 + Math.round(i * (90 / 7))}%`
 );
 
-// Shield left-position when spread (wall mode)
-function wallLeft(i: number): string {
-  return `${3 + i * 9.4}%`;
+// Shield left position: 10 shields from 5% to 86%
+function shieldLeft(i: number): string {
+  return `${5 + i * 9}%`;
 }
 
 // ---------------------------------------------------------------------------
-// Draggable chip: "index × 40" (green) or "40" (orange)
+// Draggable chip
 // ---------------------------------------------------------------------------
-type ChipId = 'index' | 'forty';
-
-function DraggableChip({ id, label, colorClass, disabled }: {
-  id: ChipId; label: string; colorClass: string; disabled: boolean;
+function DraggableChip({ id, label, colorClass }: {
+  id: string; label: string; colorClass: string;
 }) {
-  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id, disabled });
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id });
   return (
     <div
       ref={setNodeRef}
       {...listeners}
       {...attributes}
       className={`px-4 py-3 rounded-xl font-mono font-black text-sm border-4 shadow-chunky
-        select-none cursor-grab active:cursor-grabbing transition-opacity
+        select-none cursor-grab active:cursor-grabbing touch-none transition-opacity
         ${colorClass}
-        ${isDragging ? 'opacity-30' : 'opacity-100'}
-        ${disabled ? 'opacity-40 cursor-default pointer-events-none' : ''}`}
+        ${isDragging ? 'opacity-30' : 'opacity-100'}`}
     >
       {label}
     </div>
@@ -51,48 +47,24 @@ function DraggableChip({ id, label, colorClass, disabled }: {
 }
 
 // ---------------------------------------------------------------------------
-// Loop display with droppable X-slot
+// Droppable slot (inside the loop body)
 // ---------------------------------------------------------------------------
-type SlotValue = 'empty' | 'index' | 'forty';
-
-function LoopBox({ slot, loopLabel, indexLabel, fortyLabel, placeholder }: {
-  slot: SlotValue;
-  loopLabel: string;
-  indexLabel: string;
-  fortyLabel: string;
-  placeholder: string;
+function DroppableSlot({ id, filled, chipLabel, chipColorClass, placeholder }: {
+  id: string; filled: boolean; chipLabel: string; chipColorClass: string; placeholder: string;
 }) {
-  const { isOver, setNodeRef } = useDroppable({ id: 'x-slot' });
-
-  const slotInner =
-    slot === 'index' ? (
-      <span className="font-mono font-black text-kids-green text-sm">{indexLabel}</span>
-    ) : slot === 'forty' ? (
-      <span className="font-mono font-black text-kids-orange text-sm">{fortyLabel}</span>
-    ) : (
-      <span className="font-mono text-kids-blue/40 text-sm italic">{placeholder}</span>
-    );
-
+  const { isOver, setNodeRef } = useDroppable({ id });
   return (
-    <div className="w-full space-y-1">
-      <div className="bg-kids-purple rounded-xl px-4 py-2 inline-block">
-        <span className="font-mono font-black text-white text-sm">{loopLabel} {'{'}</span>
-      </div>
-      <div className="ml-6 flex items-center flex-wrap gap-1">
-        <span className="font-mono text-kids-green/80 text-sm">{"clone('shield', at X: "}</span>
-        <div
-          ref={setNodeRef}
-          className={`inline-flex items-center min-w-[120px] px-3 py-1.5 rounded-lg border-2 transition-all
-            ${isOver ? 'border-kids-green bg-kids-green/20 scale-[1.03]' : 'border-kids-blue/40 bg-white'}
-            ${slot !== 'empty' ? 'border-solid' : 'border-dashed'}`}
-        >
-          {slotInner}
-        </div>
-        <span className="font-mono text-kids-green/80 text-sm">{')'}</span>
-      </div>
-      <div className="bg-kids-purple rounded-xl px-4 py-2 inline-block">
-        <span className="font-mono font-black text-white text-sm">{'}'}</span>
-      </div>
+    <div
+      ref={setNodeRef}
+      className={`px-3 py-2 rounded-xl font-mono font-black text-sm min-w-[170px] text-center border-2 transition-all
+        ${filled
+          ? `${chipColorClass} border-transparent`
+          : isOver
+            ? 'border-kids-yellow bg-kids-yellow/10 text-kids-yellow'
+            : 'border-dashed border-gray-500 bg-gray-800/50 text-gray-500 italic'
+        }`}
+    >
+      {filled ? chipLabel : placeholder}
     </div>
   );
 }
@@ -101,394 +73,294 @@ function LoopBox({ slot, loopLabel, indexLabel, fortyLabel, placeholder }: {
 // Main component
 // ---------------------------------------------------------------------------
 export function ShieldGenerator() {
-  const t      = useTranslations('lesson15');
-  const params = useParams();
-  const locale = (params?.locale as string) ?? 'en';
+  const t = useTranslations('lesson15');
+  const { locale } = useParams() as { locale: string };
 
-  const [slot, setSlot]               = useState<SlotValue>('empty');
-  const [dragging, setDragging]       = useState<string | null>(null);
-  const [phase, setPhase]             = useState<'idle' | 'generating' | 'shielded' | 'meteors' | 'done'>('idle');
-  const [shieldsUp, setShieldsUp]     = useState(0);
+  const [cloneFilled, setCloneFilled] = useState(false);
+  const [moveFilled, setMoveFilled] = useState(false);
+  const [activeDrag, setActiveDrag] = useState<string | null>(null);
+  const [phase, setPhase] = useState<'idle' | 'running' | 'done'>('idle');
+  const [stepTick, setStepTick] = useState(0);
+  const [bleepX, setBleepX] = useState(5);
   const [meteorPhase, setMeteorPhase] = useState<'frozen' | 'falling' | 'settled'>('frozen');
-  const [outcome, setOutcome]         = useState<'none' | 'wall' | 'stacked'>('none');
-  const [bleepHit, setBleepHit]       = useState(false);
-  const [status, setStatus]           = useState<'idle' | 'success'>('idle');
-  const [showHint, setShowHint]       = useState(false);
+  const [status, setStatus] = useState<'idle' | 'success'>('idle');
+  const [showHint, setShowHint] = useState(false);
   const savedRef = useRef(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
-    useSensor(TouchSensor,   { activationConstraint: { delay: 200, tolerance: 5 } }),
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 100, tolerance: 8 } }),
   );
 
-  function handleDragStart({ active }: DragStartEvent) {
-    setDragging(active.id as string);
-  }
-
-  function handleDragEnd({ over, active }: DragEndEvent) {
-    setDragging(null);
-    if (!over || phase !== 'idle' || status === 'success') return;
-    if (over.id === 'x-slot') {
-      setSlot(active.id as SlotValue);
-    }
-  }
-
-  function handleRun() {
-    if (slot === 'empty' || phase !== 'idle' || status === 'success') return;
-    const newOutcome: 'wall' | 'stacked' = slot === 'index' ? 'wall' : 'stacked';
-    setOutcome(newOutcome);
-    setShieldsUp(0);
-    setMeteorPhase('frozen');
-    setBleepHit(false);
-    setPhase('generating');
-  }
-
-  function handleTryAgain() {
-    setPhase('idle');
-    setShieldsUp(0);
-    setMeteorPhase('frozen');
-    setBleepHit(false);
-    setOutcome('none');
-    // Keep slot so user can see what to swap
-  }
-
-  // Shield generation → meteor sequence
+  // Step animation: one shield + one Bleep step every 300ms
   useEffect(() => {
-    if (phase !== 'generating') return;
-    if (shieldsUp >= SHIELD_COUNT) {
-      setPhase('shielded');
-      setTimeout(() => {
+    if (phase !== 'running') return;
+
+    if (stepTick >= SHIELD_COUNT) {
+      setPhase('done');
+      timerRef.current = setTimeout(() => {
         setMeteorPhase('falling');
-        setPhase('meteors');
-        setTimeout(() => {
+        timerRef.current = setTimeout(() => {
           setMeteorPhase('settled');
-          setPhase('done');
-          if (outcome === 'stacked') {
-            setBleepHit(true);
-          }
-          if (outcome === 'wall' && !savedRef.current) {
+          if (!savedRef.current) {
             savedRef.current = true;
-            setTimeout(() => {
-              setStatus('success');
-              import('canvas-confetti').then(({ default: confetti }) => {
-                confetti({ particleCount: 200, spread: 100, origin: { y: 0.4 },
-                  colors: ['#4CC9F0', '#F9C74F', '#7209B7', '#06D6A0', '#EF233C'] });
-              });
-              completeLesson(15, 'sticker-clone_commander').catch(console.error);
-            }, 600);
+            completeLesson(15, 'sticker-clone_commander').catch(console.error);
           }
-        }, 2000);
-      }, 600);
+          timerRef.current = setTimeout(() => setStatus('success'), 600);
+        }, 1800);
+      }, 400);
       return;
     }
-    const timer = setTimeout(() => setShieldsUp(s => s + 1), 130);
-    return () => clearTimeout(timer);
-  }, [phase, shieldsUp, outcome]);
 
-  // Meteor y-animation depends on outcome
-  const meteorFallingY  = outcome === 'stacked' ? [0, 210, 200] : [0, 150, 135];
-  const meteorSettledY  = outcome === 'stacked' ? 200 : 135;
-  const meteorSettledOp = outcome === 'stacked' ? 0   : 0.3;
+    timerRef.current = setTimeout(() => {
+      setBleepX(5 + (stepTick + 1) * 9);
+      setStepTick(s => s + 1);
+    }, 300);
 
-  const indexLabel = t('block_index');
-  const fortyLabel = t('block_forty');
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, [phase, stepTick]);
+
+  // Confetti on success
+  useEffect(() => {
+    if (status !== 'success') return;
+    import('canvas-confetti').then(m =>
+      m.default({ particleCount: 120, spread: 70, origin: { y: 0.5 } })
+    );
+  }, [status]);
+
+  // Cleanup timers on unmount
+  useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
+
+  function handleRun() {
+    if (!cloneFilled || !moveFilled || phase !== 'idle' || status === 'success') return;
+    setStepTick(0);
+    setBleepX(5);
+    setMeteorPhase('frozen');
+    setPhase('running');
+  }
+
+  function handleDragStart({ active }: DragStartEvent) {
+    setActiveDrag(active.id as string);
+  }
+
+  function handleDragEnd({ active, over }: DragEndEvent) {
+    setActiveDrag(null);
+    if (!over) return;
+    if (active.id === 'clone-chip' && over.id === 'clone-slot') setCloneFilled(true);
+    if (active.id === 'move-chip' && over.id === 'move-slot') setMoveFilled(true);
+  }
+
+  const canRun = cloneFilled && moveFilled && phase === 'idle' && status !== 'success';
 
   return (
-    <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className="flex flex-col items-center gap-6 w-full max-w-lg mx-auto px-4 py-8 pb-24">
+    <div className="flex flex-col items-center px-4 py-8 gap-6 max-w-xl mx-auto">
 
-        {/* Story card */}
-        <div className="card-kids border-kids-purple w-full text-center">
-          <div className="text-7xl mb-3">🛡️</div>
-          <h1 className="text-3xl font-black text-kids-purple mb-2">{t('title')}</h1>
-          <p className="text-lg font-bold text-gray-600 mb-3">{t('mission')}</p>
-          <p className="text-base font-black text-kids-purple bg-kids-purple/10 rounded-xl px-4 py-2">
-            🎯 {t('goal')}
-          </p>
-        </div>
+      {/* Story card */}
+      <div className="card-kids border-kids-purple w-full">
+        <p className="font-black text-kids-purple text-lg">🛡️ {t('mission')}</p>
+        <p className="text-gray-600 font-bold text-sm mt-1">{t('goal')}</p>
+      </div>
 
-        {/* Index concept tip */}
-        <div className="w-full bg-kids-green/10 border-2 border-kids-green rounded-xl px-4 py-2">
-          <p className="font-bold text-kids-green text-sm">💡 {t('index_tip')}</p>
-        </div>
-
-        {/* Arena */}
-        <div
-          className="w-full rounded-2xl border-4 border-kids-blue bg-gray-900 overflow-hidden relative"
-          style={{ height: 280 }}
-        >
-          {/* Starfield */}
-          <div className="absolute inset-0 opacity-20 pointer-events-none"
-            style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '28px 28px' }}
-          />
-
-          {/* Meteors */}
-          {METEOR_COLS.map((left, i) => (
-            <motion.div
-              key={i}
-              className="absolute text-xl select-none"
-              style={{ left, top: 6 }}
-              animate={
-                meteorPhase === 'falling'
-                  ? { y: meteorFallingY, rotate: [0, 25, 0], opacity: 1 }
-                  : meteorPhase === 'settled'
-                  ? { y: meteorSettledY, opacity: meteorSettledOp, rotate: 20 }
-                  : { y: 0, opacity: 1, rotate: 0 }
-              }
-              transition={{
-                duration: outcome === 'stacked' ? 1.1 : 0.85,
-                delay: i * 0.09,
-                type: 'spring',
-                stiffness: 160,
-                damping: 10,
-              }}
-            >
-              ☄️
-            </motion.div>
-          ))}
-
-          {/* Shield wall — each shield absolutely positioned */}
-          {Array.from({ length: SHIELD_COUNT }, (_, i) =>
-            i < shieldsUp ? (
-              <div
-                key={i}
-                className="absolute"
-                style={{
-                  left:      outcome === 'wall' ? wallLeft(i) : '12%',
-                  bottom:    outcome === 'stacked' ? (60 - i * 2) : 60,
-                  transform: 'translateX(-50%)',
-                }}
-              >
-                <motion.div
-                  initial={{ scale: 0, opacity: 0, y: 12 }}
-                  animate={{ scale: 1, opacity: 1, y: 0 }}
-                  transition={{ type: 'spring', stiffness: 420, damping: 18 }}
-                  className="text-2xl leading-none select-none"
-                >
-                  🛡️
-                </motion.div>
-              </div>
-            ) : null
-          )}
-
-          {/* Ground strip */}
-          <div className="absolute bottom-0 left-0 right-0 bg-gray-600 h-14 flex items-center gap-3 px-4">
-            <motion.span
-              className="text-2xl select-none"
-              animate={
-                bleepHit
-                  ? { x: [-10, 10, -8, 8, -5, 5, 0], y: [0, -4, 0, -3, 0] }
-                  : { x: 0, y: 0 }
-              }
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              🤖
-            </motion.span>
-            {bleepHit ? (
-              <>
-                <motion.span
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1.2, opacity: 1 }}
-                  className="text-2xl select-none"
-                >
-                  💥
-                </motion.span>
-                <motion.span
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1.1, opacity: 1 }}
-                  transition={{ delay: 0.15 }}
-                  className="text-xl select-none"
-                >
-                  💥
-                </motion.span>
-              </>
-            ) : (
-              [...Array(4)].map((_, k) => (
-                <div key={k} className="w-5 h-2 bg-gray-500 rounded-full" />
-              ))
-            )}
+      <DndContext
+        sensors={sensors}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        {/* Code editor */}
+        <div className="w-full bg-gray-900 rounded-2xl p-5 font-mono text-sm shadow-xl">
+          <span className="text-kids-green font-black">{t('loop_label')}</span>
+          <span className="text-white font-black"> {'{'}</span>
+          <div className="ml-6 mt-3 flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500 text-xs select-none">1.</span>
+              <DroppableSlot
+                id="clone-slot"
+                filled={cloneFilled}
+                chipLabel={t('block_clone')}
+                chipColorClass="bg-kids-green text-white"
+                placeholder={t('clone_placeholder')}
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500 text-xs select-none">2.</span>
+              <DroppableSlot
+                id="move-slot"
+                filled={moveFilled}
+                chipLabel={t('block_move')}
+                chipColorClass="bg-kids-blue text-white"
+                placeholder={t('move_placeholder')}
+              />
+            </div>
           </div>
-
-          {/* Status chip */}
-          <AnimatePresence>
-            {phase === 'generating' && (
-              <motion.div
-                initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                className="absolute top-3 left-1/2 -translate-x-1/2 bg-kids-purple/90 rounded-lg px-3 py-1 whitespace-nowrap"
-              >
-                <span className="font-black text-white text-xs">
-                  ⚙️ {t('loading_label')} {shieldsUp}/{SHIELD_COUNT}
-                </span>
-              </motion.div>
-            )}
-            {(phase === 'shielded' || phase === 'meteors' || phase === 'done') && (
-              <motion.div
-                initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                className={`absolute top-3 left-1/2 -translate-x-1/2 rounded-lg px-3 py-1 whitespace-nowrap
-                  ${outcome === 'stacked' ? 'bg-kids-red/90' : 'bg-kids-green/90'}`}
-              >
-                <span className="font-black text-white text-xs">
-                  {outcome === 'stacked'
-                    ? `⚠️ ${t('shields_stacked')}`
-                    : `✅ ${t('shields_ready')}`}
-                </span>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <div className="text-white font-black mt-3">{'}'}</div>
         </div>
-
-        {/* Stacking error message */}
-        <AnimatePresence>
-          {phase === 'done' && outcome === 'stacked' && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              className="w-full bg-kids-red/10 border-2 border-kids-red rounded-xl px-4 py-3"
-            >
-              <p className="font-black text-kids-red text-sm">⚠️ {t('stacked_hint')}</p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Loop editor */}
-        <LoopBox
-          slot={slot}
-          loopLabel={t('loop_label')}
-          indexLabel={indexLabel}
-          fortyLabel={fortyLabel}
-          placeholder={t('block_placeholder')}
-        />
 
         {/* Block tray */}
-        <div className="w-full bg-kids-purple/10 rounded-xl p-4 border-2 border-kids-purple/30">
-          <p className="font-black text-kids-purple text-xs mb-3 uppercase tracking-wide">
-            {t('tray_label')}
-          </p>
-          <div className="flex flex-wrap gap-3 min-h-[52px]">
-            {slot !== 'index' && (
-              <DraggableChip
-                id="index"
-                label={indexLabel}
-                colorClass="bg-kids-green text-white border-kids-green"
-                disabled={phase !== 'idle' || status === 'success'}
-              />
-            )}
-            {slot !== 'forty' && (
-              <DraggableChip
-                id="forty"
-                label={fortyLabel}
-                colorClass="bg-kids-orange text-white border-kids-orange"
-                disabled={phase !== 'idle' || status === 'success'}
-              />
-            )}
-          </div>
+        <div className="flex gap-3 flex-wrap justify-center min-h-[52px] items-center">
+          {!cloneFilled && (
+            <DraggableChip
+              id="clone-chip"
+              label={t('block_clone')}
+              colorClass="bg-kids-green text-white border-kids-green/60"
+            />
+          )}
+          {!moveFilled && (
+            <DraggableChip
+              id="move-chip"
+              label={t('block_move')}
+              colorClass="bg-kids-blue text-white border-kids-blue/60"
+            />
+          )}
+          {cloneFilled && moveFilled && phase === 'idle' && status !== 'success' && (
+            <p className="text-sm font-bold text-kids-green animate-bounce">✅ Ready — press Run!</p>
+          )}
         </div>
 
-        {/* Run + Try Again buttons */}
-        <div className="flex gap-3 w-full">
-          <motion.button
-            whileHover={slot !== 'empty' && phase === 'idle' && status !== 'success' ? { scale: 1.04 } : {}}
-            whileTap={slot !== 'empty' && phase === 'idle' && status !== 'success' ? { scale: 0.96 } : {}}
-            onClick={handleRun}
-            disabled={slot === 'empty' || phase !== 'idle' || status === 'success'}
-            className="btn-chunky bg-kids-purple text-white text-xl flex-1 disabled:opacity-40"
+        {/* DragOverlay */}
+        <DragOverlay>
+          {activeDrag === 'clone-chip' && (
+            <div className="px-4 py-3 rounded-xl bg-kids-green text-white font-mono font-black text-sm shadow-xl border-4 border-kids-green/60">
+              {t('block_clone')}
+            </div>
+          )}
+          {activeDrag === 'move-chip' && (
+            <div className="px-4 py-3 rounded-xl bg-kids-blue text-white font-mono font-black text-sm shadow-xl border-4 border-kids-blue/60">
+              {t('block_move')}
+            </div>
+          )}
+        </DragOverlay>
+      </DndContext>
+
+      {/* Arena */}
+      <div
+        className="relative w-full rounded-2xl overflow-hidden border-4 border-kids-purple"
+        style={{ height: 280, background: 'linear-gradient(to bottom, #0f0c29, #302b63, #24243e)' }}
+      >
+        {/* Stars */}
+        {Array.from({ length: 20 }, (_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-white"
+            style={{ width: 2, height: 2, left: `${(i * 17 + 5) % 95}%`, top: `${(i * 13 + 3) % 55}%`, opacity: 0.5 }}
+          />
+        ))}
+
+        {/* Meteors */}
+        {METEOR_COLS.map((left, i) => (
+          <motion.div
+            key={i}
+            className="absolute text-xl leading-none select-none"
+            style={{ left, top: 0, transform: 'translateX(-50%)' }}
+            animate={
+              meteorPhase === 'frozen'
+                ? { y: 0, opacity: 0.85 }
+                : meteorPhase === 'falling'
+                  ? { y: [0, 170, 160], opacity: [0.85, 0.85, 0.25] }
+                  : { y: 160, opacity: 0.25 }
+            }
+            transition={meteorPhase === 'falling' ? { duration: 1.5, ease: 'easeIn' } : { duration: 0 }}
           >
-            {t('run_button')}
-          </motion.button>
+            ☄️
+          </motion.div>
+        ))}
 
-          <AnimatePresence>
-            {phase === 'done' && outcome === 'stacked' && (
-              <motion.button
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0, opacity: 0 }}
-                onClick={handleTryAgain}
-                className="btn-chunky bg-white text-kids-purple border-4 border-kids-purple text-base"
+        {/* Shields — pop in one by one as stepTick advances */}
+        {Array.from({ length: SHIELD_COUNT }, (_, i) =>
+          stepTick > i && (
+            <div
+              key={i}
+              className="absolute"
+              style={{ left: shieldLeft(i), bottom: 60, transform: 'translateX(-50%)' }}
+            >
+              <motion.div
+                initial={{ scale: 0, opacity: 0, y: 14 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                transition={{ type: 'spring', stiffness: 420, damping: 18 }}
+                className="text-2xl leading-none select-none"
               >
-                {t('try_again')}
-              </motion.button>
-            )}
-          </AnimatePresence>
-        </div>
+                🛡️
+              </motion.div>
+            </div>
+          )
+        )}
 
-        {/* Hint popup */}
+        {/* Bleep — walks across placing each shield */}
+        <motion.div
+          className="absolute text-3xl leading-none select-none"
+          style={{ bottom: 88, transform: 'translateX(-50%)', zIndex: 6 }}
+          animate={{ left: `${bleepX}%` }}
+          transition={{ duration: 0.22, type: 'spring', stiffness: 320, damping: 22 }}
+        >
+          🤖
+        </motion.div>
+
+        {/* Ground strip */}
+        <div className="absolute bottom-0 left-0 right-0 h-14 bg-kids-purple/30 border-t-2 border-kids-purple/50" />
+
+        {/* Wall complete chip */}
         <AnimatePresence>
-          {showHint && (
+          {phase === 'done' && (
             <motion.div
-              initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
-              animate={{ opacity: 1, height: 'auto', overflow: 'hidden' }}
-              exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
-              className="w-full"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="absolute top-3 left-1/2 -translate-x-1/2 bg-kids-green text-white font-black text-sm px-4 py-1.5 rounded-full shadow-lg whitespace-nowrap"
             >
-              <div className="bg-kids-blue/10 border-2 border-kids-blue rounded-xl px-4 py-3 font-bold text-kids-blue">
-                💡 {t('hint')}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Success banner */}
-        <AnimatePresence mode="wait">
-          {status === 'success' && (
-            <motion.div
-              key="success"
-              initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.85 }}
-              transition={{ type: 'spring', stiffness: 380, damping: 22 }}
-              className="w-full flex flex-col items-center gap-4"
-            >
-              <div className="w-full rounded-xl px-6 py-4 text-center font-black text-lg border-4
-                bg-kids-green/20 border-kids-green text-green-800">
-                🛡️ {t('success')}
-              </div>
-              <Link href={`/${locale}/lesson16`}>
-                <motion.button
-                  initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.4, type: 'spring', stiffness: 340, damping: 16 }}
-                  className="btn-chunky bg-kids-purple text-white text-xl border-4 border-kids-purple shadow-xl"
-                >
-                  {t('next_lesson')}
-                </motion.button>
-              </Link>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <button onClick={() => setShowHint(h => !h)} className="btn-chunky bg-kids-blue text-white">
-          💡 {t('hint_button')}
-        </button>
-
-        {/* Success sticker */}
-        <AnimatePresence>
-          {status === 'success' && (
-            <motion.div
-              initial={{ scale: 0, rotate: -20 }} animate={{ scale: 1, rotate: 0 }}
-              exit={{ scale: 0 }}
-              transition={{ type: 'spring', stiffness: 280, damping: 14 }}
-              className="text-center"
-            >
-              <div className="text-8xl">🛡️</div>
-              <p className="font-black text-kids-purple text-2xl mt-2">Clone Commander! ⚡</p>
+              {t('shields_ready')}
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      <DragOverlay>
-        {dragging === 'index' && (
-          <div className="px-4 py-3 rounded-xl font-mono font-black text-sm border-4 shadow-xl
-            bg-kids-green text-white border-kids-green">
-            {indexLabel}
-          </div>
+      {/* Buttons */}
+      <div className="flex gap-3 flex-wrap justify-center">
+        <motion.button
+          onClick={handleRun}
+          disabled={!canRun}
+          whileTap={{ scale: canRun ? 0.95 : 1 }}
+          className="btn-chunky bg-kids-purple text-white text-lg disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          {phase === 'running' ? `⏳ ${t('loading_label')}…` : t('run_button')}
+        </motion.button>
+        <button
+          onClick={() => setShowHint(h => !h)}
+          className="btn-chunky bg-white text-kids-purple border-4 border-kids-purple text-base"
+        >
+          {t('hint_button')}
+        </button>
+      </div>
+
+      {/* Hint */}
+      <AnimatePresence>
+        {showHint && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="w-full bg-kids-yellow/20 border-2 border-kids-yellow rounded-xl p-3 text-sm font-bold text-gray-700 overflow-hidden"
+          >
+            💡 {t('hint')}
+          </motion.div>
         )}
-        {dragging === 'forty' && (
-          <div className="px-4 py-3 rounded-xl font-mono font-black text-sm border-4 shadow-xl
-            bg-kids-orange text-white border-kids-orange">
-            {fortyLabel}
-          </div>
+      </AnimatePresence>
+
+      {/* Success banner */}
+      <AnimatePresence>
+        {status === 'success' && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="w-full card-kids border-kids-green text-center"
+          >
+            <p className="font-black text-kids-green text-xl mb-3">🎉 {t('success')}</p>
+            <Link href={`/${locale}/lesson16`}>
+              <button className="btn-chunky bg-kids-green text-white text-lg">
+                {t('next_lesson')}
+              </button>
+            </Link>
+          </motion.div>
         )}
-      </DragOverlay>
-    </DndContext>
+      </AnimatePresence>
+    </div>
   );
 }

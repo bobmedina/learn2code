@@ -92,7 +92,7 @@ export default async function HomePage({ params: { locale } }: { params: { local
             </Link>
             <Link href={`/${locale}/sticker-book`}>
               <button className="btn-chunky bg-white text-kids-purple border-4 border-kids-purple text-xl">
-                🏅 My Badges
+                🏅 {t('myBadges')}
               </button>
             </Link>
           </div>

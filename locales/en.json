@@ -231,22 +231,18 @@
   },
   "lesson15": {
     "title": "The Shield Generator",
-    "mission": "10 meteors are falling across the whole arena! A clone loop alone won't help if all shields land in the same spot.",
-    "goal": "Drag 'index × 40' into the loop — each clone moves 40 px right, building a real wall!",
+    "mission": "10 meteors are heading for Bleep's planet! Build a wall of shields to stop them!",
+    "goal": "Drag both blocks into the loop — Bleep will place a shield, then step right!",
     "loop_label": "repeat(10)",
-    "block_index": "index × 40",
-    "block_forty": "40",
-    "block_placeholder": "drag X position here",
-    "index_tip": "index = the clone number: 0, 1, 2, 3 …",
+    "block_clone": "clone('shield')",
+    "block_move": "move_right(40)",
+    "clone_placeholder": "drag clone here",
+    "move_placeholder": "drag move here",
     "run_button": "▶ Run Code",
-    "loading_label": "Generating shields",
+    "loading_label": "Building wall",
     "shields_ready": "Wall complete! ✅",
-    "shields_stacked": "All stacked! 😱",
-    "stacked_hint": "All 10 shields landed in the same spot! Swap '40' for 'index × 40' to spread them out.",
-    "tray_label": "X position blocks 👇",
-    "try_again": "↩ Try Again",
-    "success": "Brilliant! You used 'Position' to spread out your clones. Now that's a real defense wall! 🛡️🛰️",
-    "hint": "Drag 'index × 40' into the loop. Clone 0 → X=0, clone 1 → X=40, clone 2 → X=80…",
+    "success": "Amazing! You built a defence wall using a loop! Every iteration placed one shield and stepped right. 🛡️🚀",
+    "hint": "Drag 'clone(shield)' into the first slot, then 'move_right(40)' into the second slot.",
     "hint_button": "Hint",
     "next_lesson": "Go to Lesson 16 ➡️"
   },
@@ -344,6 +340,7 @@
     "phase2_label": "Phase 2 — Advanced Adventures",
     "phase2_sub": "Variables, Math, AI & more",
     "phase2_unlocked": "Phase 2 Unlocked!",
-    "phase2_lock_hint": "Complete Phase 1 to unlock!"
+    "phase2_lock_hint": "Complete Phase 1 to unlock!",
+    "myBadges": "My Badges"
   }
 }
