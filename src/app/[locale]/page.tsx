@@ -1,22 +1,23 @@
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { UserStats } from '@/components/UserStats';
 import { getUserProfileData } from '@/lib/actions';
 
 export default async function HomePage({ params: { locale } }: { params: { locale: string } }) {
-  const t   = useTranslations('home');
-  const ta  = useTranslations('auth');
-  const tL1 = useTranslations('lesson1');
-  const tL2 = useTranslations('lesson2');
-  const tL3 = useTranslations('lesson3');
-  const tL4 = useTranslations('lesson4');
-  const tL5 = useTranslations('lesson5');
-  const tL6 = useTranslations('lesson6');
-
-  // Fetch stats server-side; null when not signed in or migration not yet applied
-  const stats = await getUserProfileData();
+  // async server components must use getTranslations, not the useTranslations hook
+  const [t, ta, tL1, tL2, tL3, tL4, tL5, tL6, stats] = await Promise.all([
+    getTranslations('home'),
+    getTranslations('auth'),
+    getTranslations('lesson1'),
+    getTranslations('lesson2'),
+    getTranslations('lesson3'),
+    getTranslations('lesson4'),
+    getTranslations('lesson5'),
+    getTranslations('lesson6'),
+    getUserProfileData(),
+  ]);
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
