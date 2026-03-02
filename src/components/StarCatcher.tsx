@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { completeLesson } from '@/lib/actions';
 
@@ -48,6 +50,8 @@ function CodePanel({ catching }: { catching: boolean }) {
 // ---------------------------------------------------------------------------
 export function StarCatcher() {
   const t = useTranslations('lesson10');
+  const params = useParams();
+  const locale = (params?.locale as string) ?? 'en';
 
   const [stars, setStars]           = useState<Star[]>([]);
   const [bleepCol, setBleepCol]     = useState(2);
@@ -276,7 +280,7 @@ export function StarCatcher() {
         )}
       </AnimatePresence>
 
-      {/* Success banner + Finish Course button (only when score >= 10) */}
+      {/* Success banner + Phase 1 badge + Unlock button (only when score >= 10) */}
       <AnimatePresence mode="wait">
         {status === 'success' && (
           <motion.div
@@ -286,20 +290,38 @@ export function StarCatcher() {
             transition={{ type: 'spring', stiffness: 380, damping: 22 }}
             className="w-full flex flex-col items-center gap-4"
           >
+            {/* Success message */}
             <div className="w-full rounded-xl px-6 py-4 text-center font-black text-lg border-4
               bg-kids-green/20 border-kids-green text-green-800">
               ⭐ {t('success')} ⭐
             </div>
-            {/* Finish Course — only visible when score >= WIN_SCORE (requirement) */}
+
+            {/* Phase 1 Complete badge */}
             {score >= WIN_SCORE && (
-              <motion.button
+              <motion.div
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.4, type: 'spring', stiffness: 340, damping: 16 }}
-                className="btn-chunky bg-kids-yellow text-kids-purple text-2xl border-4 border-kids-yellow shadow-xl"
+                transition={{ delay: 0.3, type: 'spring', stiffness: 340, damping: 16 }}
+                className="w-full rounded-2xl px-6 py-5 text-center border-4 border-kids-yellow bg-kids-yellow/10"
               >
-                🎓 {t('finish_button')}
-              </motion.button>
+                <div className="text-5xl mb-2">🏆</div>
+                <p className="font-black text-kids-purple text-xl">{t('phase1_badge')}</p>
+                <p className="font-bold text-gray-600 text-sm mt-1">{t('phase1_sub')}</p>
+              </motion.div>
+            )}
+
+            {/* Unlock Level 11 — navigates to Phase 2 */}
+            {score >= WIN_SCORE && (
+              <Link href={`/${locale}/lesson11`}>
+                <motion.button
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.6, type: 'spring', stiffness: 340, damping: 16 }}
+                  className="btn-chunky bg-kids-purple text-white text-2xl border-4 border-kids-purple shadow-xl"
+                >
+                  🚀 {t('finish_button')}
+                </motion.button>
+              </Link>
             )}
           </motion.div>
         )}

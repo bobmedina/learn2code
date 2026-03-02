@@ -92,8 +92,17 @@ export default async function HomePage({ params: { locale } }: { params: { local
         </SignedIn>
       </div>
 
+      {/* Phase 1 header */}
+      <div className="mt-16 w-full max-w-3xl flex items-center gap-4">
+        <div className="h-1 flex-1 bg-kids-purple/20 rounded-full" />
+        <span className="font-black text-kids-purple text-sm uppercase tracking-widest whitespace-nowrap">
+          🎮 {t('phase1_label')}
+        </span>
+        <div className="h-1 flex-1 bg-kids-purple/20 rounded-full" />
+      </div>
+
       {/* Lesson cards */}
-      <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-3xl">
+      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-3xl">
 
         <SignedIn>
           {/* Logged-in: clickable cards */}
@@ -212,6 +221,23 @@ export default async function HomePage({ params: { locale } }: { params: { local
             <p className="text-kids-purple font-black text-xs mt-2 group-hover:underline">{ta('signIn')} →</p>
           </Link>
         </SignedOut>
+      </div>
+
+      {/* Phase 2 header */}
+      <div className="mt-10 w-full max-w-3xl flex items-center gap-4">
+        <div className="h-1 flex-1 bg-kids-yellow/40 rounded-full" />
+        <span className="font-black text-kids-yellow text-sm uppercase tracking-widest whitespace-nowrap">
+          🚀 {t('phase2_label')}
+        </span>
+        <div className="h-1 flex-1 bg-kids-yellow/40 rounded-full" />
+      </div>
+
+      {/* Phase 2 — coming soon banner */}
+      <div className="mt-4 w-full max-w-3xl rounded-2xl border-4 border-dashed border-kids-yellow/50
+        bg-kids-yellow/5 px-8 py-8 text-center">
+        <div className="text-5xl mb-3">🔮</div>
+        <p className="font-black text-kids-yellow text-xl">{t('phase2_coming')}</p>
+        <p className="font-bold text-gray-400 text-sm mt-2">{t('phase2_sub')}</p>
       </div>
 
       {/* Sign-in nudge banner — only for logged-out users */}

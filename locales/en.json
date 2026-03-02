@@ -148,8 +148,10 @@
     "move_left": "← Left",
     "move_right": "Right →",
     "start_button": "Start Game! 🎮",
-    "finish_button": "Finish Course! 🎓",
-    "success": "You caught 10 stars! You've mastered coding — INCREDIBLE! 🌟",
+    "finish_button": "Unlock Level 11! 🚀",
+    "success": "Incredible! You've mastered the basics. You are now a Junior Programmer! Ready for Phase 2?",
+    "phase1_badge": "Phase 1 Complete! 🏆",
+    "phase1_sub": "Junior Programmer — The Basics are yours!",
     "hint": "Move Bleep under the falling ⭐ stars to catch them. The code loop runs automatically!",
     "hint_button": "Hint",
     "stars_caught": "{count}/10 stars",
@@ -232,6 +234,10 @@
   "home": {
     "heading": "Learn to Code!",
     "subheading": "Fun coding adventures for kids",
-    "startButton": "Start Learning!"
+    "startButton": "Start Learning!",
+    "phase1_label": "Phase 1 — The Basics",
+    "phase2_label": "Phase 2 — Advanced Adventures",
+    "phase2_coming": "Coming soon! Finish Phase 1 to unlock.",
+    "phase2_sub": "Variables, Math, AI & more"
   }
 }

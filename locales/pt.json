@@ -148,8 +148,10 @@
     "move_left": "← Esquerda",
     "move_right": "Direita →",
     "start_button": "Começar Jogo! 🎮",
-    "finish_button": "Terminar Curso! 🎓",
-    "success": "Apanhaste 10 estrelas! Dominaste a programação — INCRÍVEL! 🌟",
+    "finish_button": "Próxima Fase! 🚀",
+    "success": "Incrível! Dominaste o básico. És agora um Programador Júnior! Pronto para a Fase 2?",
+    "phase1_badge": "Fase 1 Concluída! 🏆",
+    "phase1_sub": "Programador Júnior — Os Fundamentos são teus!",
     "hint": "Move o Bleep para baixo das ⭐ estrelas para as apanhar. O ciclo de código executa automaticamente!",
     "hint_button": "Dica",
     "stars_caught": "{count}/10 estrelas",
@@ -232,6 +234,10 @@
   "home": {
     "heading": "Aprende a Programar!",
     "subheading": "Aventuras divertidas de programação para crianças",
-    "startButton": "Começar a Aprender!"
+    "startButton": "Começar a Aprender!",
+    "phase1_label": "Fase 1 — Os Fundamentos",
+    "phase2_label": "Fase 2 — Aventuras Avançadas",
+    "phase2_coming": "Em breve! Conclui a Fase 1 para desbloquear.",
+    "phase2_sub": "Variáveis, Matemática, IA e muito mais"
   }
 }
