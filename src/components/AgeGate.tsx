@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { SignUp } from '@clerk/nextjs';
 
@@ -13,8 +13,17 @@ export function AgeGate({ locale }: AgeGateProps) {
   const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [proceeded, setProceed] = useState(false);
 
+  // Restore proceeded from sessionStorage so Clerk's internal navigation
+  // doesn't reset the state and re-show the age gate mid-sign-up
+  useEffect(() => {
+    if (sessionStorage.getItem('ageGatePassed') === 'true') {
+      setProceed(true);
+    }
+  }, []);
+
   const handleContinue = () => {
     sessionStorage.setItem('ageConfirmed', ageConfirmed ? 'true' : 'false');
+    sessionStorage.setItem('ageGatePassed', 'true');
     setProceed(true);
   };
 
