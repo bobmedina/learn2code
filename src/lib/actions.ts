@@ -104,6 +104,7 @@ const STICKER_TO_BADGE: Record<string, string> = {
   'sticker-bug_detective':'bug_detective',
   'sticker-map_explorer': 'map_explorer',
   'sticker-game_master':  'game_master',
+  'sticker-secret_coder': 'secret_coder',
 };
 
 // ---------------------------------------------------------------------------

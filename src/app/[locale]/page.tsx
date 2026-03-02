@@ -3,11 +3,12 @@ import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { UserStats } from '@/components/UserStats';
+import { Phase2Section } from '@/components/Phase2Section';
 import { getUserProfileData } from '@/lib/actions';
 
 export default async function HomePage({ params: { locale } }: { params: { locale: string } }) {
   // async server components must use getTranslations, not the useTranslations hook
-  const [t, ta, tL1, tL2, tL3, tL4, tL5, tL6, tL7, tL8, tL9, tL10, stats] = await Promise.all([
+  const [t, ta, tL1, tL2, tL3, tL4, tL5, tL6, tL7, tL8, tL9, tL10, tL11, stats] = await Promise.all([
     getTranslations('home'),
     getTranslations('auth'),
     getTranslations('lesson1'),
@@ -20,6 +21,7 @@ export default async function HomePage({ params: { locale } }: { params: { local
     getTranslations('lesson8'),
     getTranslations('lesson9'),
     getTranslations('lesson10'),
+    getTranslations('lesson11'),
     getUserProfileData(),
   ]);
 
@@ -223,22 +225,16 @@ export default async function HomePage({ params: { locale } }: { params: { local
         </SignedOut>
       </div>
 
-      {/* Phase 2 header */}
-      <div className="mt-10 w-full max-w-3xl flex items-center gap-4">
-        <div className="h-1 flex-1 bg-kids-yellow/40 rounded-full" />
-        <span className="font-black text-kids-yellow text-sm uppercase tracking-widest whitespace-nowrap">
-          🚀 {t('phase2_label')}
-        </span>
-        <div className="h-1 flex-1 bg-kids-yellow/40 rounded-full" />
-      </div>
-
-      {/* Phase 2 — coming soon banner */}
-      <div className="mt-4 w-full max-w-3xl rounded-2xl border-4 border-dashed border-kids-yellow/50
-        bg-kids-yellow/5 px-8 py-8 text-center">
-        <div className="text-5xl mb-3">🔮</div>
-        <p className="font-black text-kids-yellow text-xl">{t('phase2_coming')}</p>
-        <p className="font-bold text-gray-400 text-sm mt-2">{t('phase2_sub')}</p>
-      </div>
+      {/* Phase 2 — locked until lesson 10 complete, then dynamically unlocks */}
+      <Phase2Section
+        unlocked={stats ? stats.current_lesson > 10 : false}
+        lesson11Title={tL11('title')}
+        phase2Label={t('phase2_label')}
+        phase2Sub={t('phase2_sub')}
+        phase2UnlockedLabel={t('phase2_unlocked')}
+        phase2LockHint={t('phase2_lock_hint')}
+        locale={locale}
+      />
 
       {/* Sign-in nudge banner — only for logged-out users */}
       <SignedOut>

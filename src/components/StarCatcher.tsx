@@ -319,7 +319,7 @@ export function StarCatcher() {
                   transition={{ delay: 0.6, type: 'spring', stiffness: 340, damping: 16 }}
                   className="btn-chunky bg-kids-purple text-white text-2xl border-4 border-kids-purple shadow-xl"
                 >
-                  🚀 {t('finish_button')}
+                  🚀 {t('next_lesson')}
                 </motion.button>
               </Link>
             )}

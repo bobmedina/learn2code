@@ -149,6 +149,7 @@
     "move_right": "Right →",
     "start_button": "Start Game! 🎮",
     "finish_button": "Unlock Level 11! 🚀",
+    "next_lesson": "Start Phase 2: Lesson 11 →",
     "success": "Incredible! You've mastered the basics. You are now a Junior Programmer! Ready for Phase 2?",
     "phase1_badge": "Phase 1 Complete! 🏆",
     "phase1_sub": "Junior Programmer — The Basics are yours!",
@@ -160,6 +161,24 @@
     "code_score": "    score = score + 1",
     "code_close": "  }",
     "code_end": "}"
+  },
+  "lesson11": {
+    "title": "Secret Messages",
+    "mission": "Bleep found an old radio! Help him join words together to send a secret message.",
+    "story": "Coding isn't just numbers. We also use 'Strings' (Text). Let's join two words together!",
+    "goal": "Join 'Hello' + 'Bleep' to create the greeting!",
+    "success": "Amazing! You just performed your first text 'Concatenation'! 📻✨",
+    "next_lesson": "Go to Lesson 12 ➡️",
+    "word_hello": "Hello",
+    "word_bleep": "Bleep",
+    "word_distractor": "World",
+    "join_label": "join(",
+    "run_button": "▶ Run Code",
+    "speak_button": "📻 Speak!",
+    "feedback_wrong": "Almost! Try joining 'Hello' and 'Bleep' together!",
+    "hint": "Drag 'Hello' into the first slot and 'Bleep' into the second slot, then press Run!",
+    "hint_button": "Hint",
+    "tray_label": "Word blocks — drag into join()"
   },
   "stickerBook": {
     "title": "My Badge Collection",
@@ -237,7 +256,8 @@
     "startButton": "Start Learning!",
     "phase1_label": "Phase 1 — The Basics",
     "phase2_label": "Phase 2 — Advanced Adventures",
-    "phase2_coming": "Coming soon! Finish Phase 1 to unlock.",
-    "phase2_sub": "Variables, Math, AI & more"
+    "phase2_sub": "Variables, Math, AI & more",
+    "phase2_unlocked": "Phase 2 Unlocked!",
+    "phase2_lock_hint": "Complete Phase 1 to unlock!"
   }
 }

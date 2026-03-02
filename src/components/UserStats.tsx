@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 
 const LESSONS_PER_LEVEL = 10;
+const TOTAL_LESSONS     = 20;
 
 export function UserStats({
   points,
@@ -60,7 +61,7 @@ export function UserStats({
 
         {/* Caption */}
         <p className="text-gray-400 font-bold text-xs leading-none">
-          {completed}/{LESSONS_PER_LEVEL} → Lv.{nextLevel}
+          {completed}/{TOTAL_LESSONS} lessons
         </p>
       </div>
     </Link>

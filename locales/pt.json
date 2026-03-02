@@ -149,6 +149,7 @@
     "move_right": "Direita →",
     "start_button": "Começar Jogo! 🎮",
     "finish_button": "Próxima Fase! 🚀",
+    "next_lesson": "Iniciar Fase 2: Lição 11 →",
     "success": "Incrível! Dominaste o básico. És agora um Programador Júnior! Pronto para a Fase 2?",
     "phase1_badge": "Fase 1 Concluída! 🏆",
     "phase1_sub": "Programador Júnior — Os Fundamentos são teus!",
@@ -160,6 +161,24 @@
     "code_score": "    pontos = pontos + 1",
     "code_close": "  }",
     "code_end": "}"
+  },
+  "lesson11": {
+    "title": "Mensagens Secretas",
+    "mission": "O Bleep encontrou um rádio antigo! Ajuda-o a juntar palavras para enviar uma mensagem secreta.",
+    "story": "Programar não é apenas números. Também usamos 'Strings' (Cadeias de Texto). Vamos juntar duas palavras!",
+    "goal": "Junta 'Olá' + 'Bleep' para criares a saudação!",
+    "success": "Incrível! Acabaste de fazer a tua primeira 'Concatenação' de texto! 📻✨",
+    "next_lesson": "Ir para a Lição 12 ➡️",
+    "word_hello": "Olá",
+    "word_bleep": "Bleep",
+    "word_distractor": "Mundo",
+    "join_label": "juntar(",
+    "run_button": "▶ Executar",
+    "speak_button": "📻 Falar!",
+    "feedback_wrong": "Quase! Tenta juntar 'Olá' e 'Bleep' juntos!",
+    "hint": "Arrasta 'Olá' para o primeiro slot e 'Bleep' para o segundo, depois prime Executar!",
+    "hint_button": "Dica",
+    "tray_label": "Blocos de texto — arrasta para juntar()"
   },
   "stickerBook": {
     "title": "A Minha Coleção de Medalhas",
@@ -237,7 +256,8 @@
     "startButton": "Começar a Aprender!",
     "phase1_label": "Fase 1 — Os Fundamentos",
     "phase2_label": "Fase 2 — Aventuras Avançadas",
-    "phase2_coming": "Em breve! Conclui a Fase 1 para desbloquear.",
-    "phase2_sub": "Variáveis, Matemática, IA e muito mais"
+    "phase2_sub": "Variáveis, Matemática, IA e muito mais",
+    "phase2_unlocked": "Fase 2 Desbloqueada!",
+    "phase2_lock_hint": "Completa a Fase 1 para desbloquear!"
   }
 }
