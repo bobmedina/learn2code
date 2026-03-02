@@ -94,12 +94,16 @@ export async function createProfile(
 // Sticker ID → badge ID (backfill: unlocked_stickers populated before migration 003)
 // ---------------------------------------------------------------------------
 const STICKER_TO_BADGE: Record<string, string> = {
-  'sticker-algorithm': 'chef_logic',
-  'sticker-logic':     'weather_wizard',
-  'sticker-loop':      'loop_dancer',
-  'sticker-variable':  'magic_box',
-  'sticker-array':     'backpack_pro',
-  'sticker-function':  'func_hero',
+  'sticker-algorithm':    'chef_logic',
+  'sticker-logic':        'weather_wizard',
+  'sticker-loop':         'loop_dancer',
+  'sticker-variable':     'magic_box',
+  'sticker-array':        'backpack_pro',
+  'sticker-function':     'func_hero',
+  'sticker-click_master': 'click_master',
+  'sticker-bug_detective':'bug_detective',
+  'sticker-map_explorer': 'map_explorer',
+  'sticker-game_master':  'game_master',
 };
 
 // ---------------------------------------------------------------------------

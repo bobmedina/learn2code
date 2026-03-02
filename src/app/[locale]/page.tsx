@@ -7,7 +7,7 @@ import { getUserProfileData } from '@/lib/actions';
 
 export default async function HomePage({ params: { locale } }: { params: { locale: string } }) {
   // async server components must use getTranslations, not the useTranslations hook
-  const [t, ta, tL1, tL2, tL3, tL4, tL5, tL6, stats] = await Promise.all([
+  const [t, ta, tL1, tL2, tL3, tL4, tL5, tL6, tL7, tL8, tL9, tL10, stats] = await Promise.all([
     getTranslations('home'),
     getTranslations('auth'),
     getTranslations('lesson1'),
@@ -16,6 +16,10 @@ export default async function HomePage({ params: { locale } }: { params: { local
     getTranslations('lesson4'),
     getTranslations('lesson5'),
     getTranslations('lesson6'),
+    getTranslations('lesson7'),
+    getTranslations('lesson8'),
+    getTranslations('lesson9'),
+    getTranslations('lesson10'),
     getUserProfileData(),
   ]);
 
@@ -123,6 +127,26 @@ export default async function HomePage({ params: { locale } }: { params: { local
             <h2 className="text-xl font-black text-kids-purple">Lesson 6</h2>
             <p className="text-gray-500 font-bold text-sm mt-1">{tL6('title')}</p>
           </Link>
+          <Link href={`/${locale}/lesson7`} className="card-kids border-kids-red hover:scale-105 transition-transform block">
+            <div className="text-5xl mb-3">👆</div>
+            <h2 className="text-xl font-black text-kids-purple">Lesson 7</h2>
+            <p className="text-gray-500 font-bold text-sm mt-1">{tL7('title')}</p>
+          </Link>
+          <Link href={`/${locale}/lesson8`} className="card-kids border-kids-yellow hover:scale-105 transition-transform block">
+            <div className="text-5xl mb-3">🔍</div>
+            <h2 className="text-xl font-black text-kids-purple">Lesson 8</h2>
+            <p className="text-gray-500 font-bold text-sm mt-1">{tL8('title')}</p>
+          </Link>
+          <Link href={`/${locale}/lesson9`} className="card-kids border-kids-green hover:scale-105 transition-transform block">
+            <div className="text-5xl mb-3">🗺️</div>
+            <h2 className="text-xl font-black text-kids-purple">Lesson 9</h2>
+            <p className="text-gray-500 font-bold text-sm mt-1">{tL9('title')}</p>
+          </Link>
+          <Link href={`/${locale}/lesson10`} className="card-kids border-kids-purple hover:scale-105 transition-transform block">
+            <div className="text-5xl mb-3">⭐</div>
+            <h2 className="text-xl font-black text-kids-purple">Lesson 10</h2>
+            <p className="text-gray-500 font-bold text-sm mt-1">{tL10('title')}</p>
+          </Link>
         </SignedIn>
 
         <SignedOut>
@@ -161,6 +185,30 @@ export default async function HomePage({ params: { locale } }: { params: { local
             <div className="text-5xl mb-3">🔒</div>
             <h2 className="text-xl font-black text-kids-purple">Lesson 6</h2>
             <p className="text-gray-400 font-bold text-sm mt-1">{tL6('title')}</p>
+            <p className="text-kids-purple font-black text-xs mt-2 group-hover:underline">{ta('signIn')} →</p>
+          </Link>
+          <Link href={`/${locale}/sign-in`} className="card-kids border-kids-red hover:scale-105 transition-transform block group">
+            <div className="text-5xl mb-3">🔒</div>
+            <h2 className="text-xl font-black text-kids-purple">Lesson 7</h2>
+            <p className="text-gray-400 font-bold text-sm mt-1">{tL7('title')}</p>
+            <p className="text-kids-red font-black text-xs mt-2 group-hover:underline">{ta('signIn')} →</p>
+          </Link>
+          <Link href={`/${locale}/sign-in`} className="card-kids border-kids-yellow hover:scale-105 transition-transform block group">
+            <div className="text-5xl mb-3">🔒</div>
+            <h2 className="text-xl font-black text-kids-purple">Lesson 8</h2>
+            <p className="text-gray-400 font-bold text-sm mt-1">{tL8('title')}</p>
+            <p className="text-kids-yellow font-black text-xs mt-2 group-hover:underline">{ta('signIn')} →</p>
+          </Link>
+          <Link href={`/${locale}/sign-in`} className="card-kids border-kids-green hover:scale-105 transition-transform block group">
+            <div className="text-5xl mb-3">🔒</div>
+            <h2 className="text-xl font-black text-kids-purple">Lesson 9</h2>
+            <p className="text-gray-400 font-bold text-sm mt-1">{tL9('title')}</p>
+            <p className="text-kids-green font-black text-xs mt-2 group-hover:underline">{ta('signIn')} →</p>
+          </Link>
+          <Link href={`/${locale}/sign-in`} className="card-kids border-kids-purple hover:scale-105 transition-transform block group">
+            <div className="text-5xl mb-3">🔒</div>
+            <h2 className="text-xl font-black text-kids-purple">Lesson 10</h2>
+            <p className="text-gray-400 font-bold text-sm mt-1">{tL10('title')}</p>
             <p className="text-kids-purple font-black text-xs mt-2 group-hover:underline">{ta('signIn')} →</p>
           </Link>
         </SignedOut>
