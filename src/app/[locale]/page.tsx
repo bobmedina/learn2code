@@ -8,7 +8,7 @@ import { getUserProfileData } from '@/lib/actions';
 
 export default async function HomePage({ params: { locale } }: { params: { locale: string } }) {
   // async server components must use getTranslations, not the useTranslations hook
-  const [t, ta, tc, tL1, tL2, tL3, tL4, tL5, tL6, tL7, tL8, tL9, tL10, tL11, tL12, tL13, tL14, tL15, tL16, tL17, tL18, stats] = await Promise.all([
+  const [t, ta, tc, tL1, tL2, tL3, tL4, tL5, tL6, tL7, tL8, tL9, tL10, tL11, tL12, tL13, tL14, tL15, tL16, tL17, tL18, tL19, tL20, stats] = await Promise.all([
     getTranslations('home'),
     getTranslations('auth'),
     getTranslations('common'),
@@ -30,6 +30,8 @@ export default async function HomePage({ params: { locale } }: { params: { local
     getTranslations('lesson16'),
     getTranslations('lesson17'),
     getTranslations('lesson18'),
+    getTranslations('lesson19'),
+    getTranslations('lesson20'),
     getUserProfileData(),
   ]);
 
@@ -244,6 +246,8 @@ export default async function HomePage({ params: { locale } }: { params: { local
         lesson16Title={tL16('title')}
         lesson17Title={tL17('title')}
         lesson18Title={tL18('title')}
+        lesson19Title={tL19('title')}
+        lesson20Title={tL20('title')}
         phase2Label={t('phase2_label')}
         phase2Sub={t('phase2_sub')}
         phase2UnlockedLabel={t('phase2_unlocked')}
