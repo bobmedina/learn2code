@@ -13,19 +13,20 @@ import {
 import { completeLesson } from '@/lib/actions';
 
 // ---------------------------------------------------------------------------
-// Draggable chip
+// Draggable chip (colour passed in)
 // ---------------------------------------------------------------------------
-function DraggableChip({ id, label }: { id: string; label: string }) {
+function DraggableChip({ id, label, colorClass }: {
+  id: string; label: string; colorClass: string;
+}) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id });
   return (
     <div
       ref={setNodeRef}
       {...listeners}
       {...attributes}
-      className={`px-4 py-3 rounded-xl font-mono font-black text-sm border-4 shadow-chunky
-        bg-kids-green text-white border-kids-green/60
+      className={`px-3 py-2 rounded-xl font-mono font-black text-sm border-4 shadow-chunky
         select-none cursor-grab active:cursor-grabbing touch-none transition-opacity
-        ${isDragging ? 'opacity-30' : 'opacity-100'}`}
+        ${colorClass} ${isDragging ? 'opacity-30' : 'opacity-100'}`}
     >
       {label}
     </div>
@@ -33,24 +34,30 @@ function DraggableChip({ id, label }: { id: string; label: string }) {
 }
 
 // ---------------------------------------------------------------------------
-// Droppable slot (inside the while loop body)
+// Droppable slot (inline in code editor)
 // ---------------------------------------------------------------------------
-function DroppableSlot({ filled, chipLabel, placeholder }: {
-  filled: boolean; chipLabel: string; placeholder: string;
+function Slot({ id, filled, filledLabel, filledColor, placeholder, wide = false }: {
+  id: string;
+  filled: boolean;
+  filledLabel: string;
+  filledColor: string;
+  placeholder: string;
+  wide?: boolean;
 }) {
-  const { isOver, setNodeRef } = useDroppable({ id: 'charge-slot' });
+  const { isOver, setNodeRef } = useDroppable({ id });
   return (
     <div
       ref={setNodeRef}
-      className={`px-3 py-2 rounded-xl font-mono font-black text-sm min-w-[160px] text-center border-2 transition-all
+      className={`rounded-lg font-mono font-black text-sm text-center border-2 transition-all
+        ${wide ? 'px-3 py-1.5 min-w-[100px]' : 'px-2 py-1.5 min-w-[52px]'}
         ${filled
-          ? 'bg-kids-green text-white border-transparent'
+          ? `${filledColor} border-transparent`
           : isOver
             ? 'border-kids-yellow bg-kids-yellow/10 text-kids-yellow'
-            : 'border-dashed border-gray-500 bg-gray-800/50 text-gray-500 italic'
+            : 'border-dashed border-gray-500 bg-gray-800/60 text-gray-500 text-xs italic'
         }`}
     >
-      {filled ? chipLabel : placeholder}
+      {filled ? filledLabel : placeholder}
     </div>
   );
 }
@@ -62,22 +69,31 @@ export function InfiniteCharge() {
   const t = useTranslations('lesson17');
   const { locale } = useParams() as { locale: string };
 
-  const [slotFilled, setSlotFilled]   = useState(false);
-  const [activeDrag, setActiveDrag]   = useState<string | null>(null);
-  const [phase, setPhase]             = useState<'idle' | 'tryOnce' | 'charging' | 'done'>('idle');
-  const [battery, setBattery]         = useState(0);
-  const [tired, setTired]             = useState(false);
-  const [status, setStatus]           = useState<'idle' | 'success'>('idle');
-  const [showHint, setShowHint]       = useState(false);
-  const savedRef  = useRef(false);
-  const timerRef  = useRef<ReturnType<typeof setInterval> | null>(null);
+  // Condition slots
+  const [varFilled,    setVarFilled]    = useState(false);
+  const [opFilled,     setOpFilled]     = useState(false);
+  const [targetFilled, setTargetFilled] = useState(false);
+  // Body slot
+  const [chargeFilled, setChargeFilled] = useState(false);
+
+  const [activeDrag, setActiveDrag] = useState<string | null>(null);
+  const [phase, setPhase]           = useState<'idle' | 'tryOnce' | 'charging' | 'done'>('idle');
+  const [battery, setBattery]       = useState(0);
+  const [tired, setTired]           = useState(false);
+  const [status, setStatus]         = useState<'idle' | 'success'>('idle');
+  const [showHint, setShowHint]     = useState(false);
+  const savedRef = useRef(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(TouchSensor,   { activationConstraint: { delay: 100, tolerance: 8 } }),
   );
 
-  // "Try once" — fills 0→1 then stops
+  const allFilled = varFilled && opFilled && targetFilled && chargeFilled;
+  const canRun    = allFilled && phase === 'idle' && status !== 'success';
+
+  // "Try once" — charge() runs alone, battery 0→1, Bleep gets tired
   function handleTryOnce() {
     if (phase !== 'idle') return;
     setBattery(0);
@@ -90,15 +106,15 @@ export function InfiniteCharge() {
     }, 500);
   }
 
-  // "Run Loop" — fills 1→100 incrementally
+  // "Run Loop" — battery fills 0→100
   function handleRun() {
-    if (!slotFilled || phase !== 'idle' || status === 'success') return;
+    if (!canRun) return;
     setBattery(0);
     setTired(false);
     setPhase('charging');
   }
 
-  // Charging loop via setInterval
+  // Charging animation: 100 steps × 20ms = 2s
   useEffect(() => {
     if (phase !== 'charging') return;
     let current = 0;
@@ -120,15 +136,11 @@ export function InfiniteCharge() {
         }
         setTimeout(() => setStatus('success'), 400);
       }
-    }, 20); // 100 steps × 20ms = 2s total
-
+    }, 20);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [phase]);
 
-  // Cleanup on unmount
-  useEffect(() => () => {
-    if (timerRef.current) clearInterval(timerRef.current);
-  }, []);
+  useEffect(() => () => { if (timerRef.current) clearInterval(timerRef.current); }, []);
 
   function handleDragStart({ active }: DragStartEvent) {
     setActiveDrag(active.id as string);
@@ -137,14 +149,14 @@ export function InfiniteCharge() {
   function handleDragEnd({ active, over }: DragEndEvent) {
     setActiveDrag(null);
     if (!over) return;
-    if (active.id === 'charge-chip' && over.id === 'charge-slot') {
-      setSlotFilled(true);
-    }
+    const a = active.id as string;
+    const o = over.id   as string;
+    if (a === 'battery-chip' && o === 'cond-var')    setVarFilled(true);
+    if (a === 'op-chip'      && o === 'cond-op')     setOpFilled(true);
+    if (a === 'target-chip'  && o === 'cond-target') setTargetFilled(true);
+    if (a === 'charge-chip'  && o === 'charge-slot') setChargeFilled(true);
   }
 
-  const canRun = slotFilled && phase === 'idle' && status !== 'success';
-
-  // Battery bar colour gradient based on level
   const barColor = battery < 30 ? '#EF233C' : battery < 70 ? '#F9C74F' : '#06D6A0';
 
   return (
@@ -162,13 +174,18 @@ export function InfiniteCharge() {
 
       <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
 
-        {/* Code editor */}
+        {/* ── Code editor ── */}
         <div className="w-full bg-gray-900 rounded-2xl p-5 font-mono text-sm shadow-xl space-y-3">
 
-          {/* One-shot row */}
+          {/* Section label */}
+          <div className="text-kids-yellow font-black text-xs uppercase tracking-widest">
+            ⚡ {t('loop_label')}
+          </div>
+
+          {/* One-shot demo row */}
           <div className="flex items-center gap-3 flex-wrap">
             <span className="text-gray-500 text-xs">{t('oneshot_label')}</span>
-            <span className="text-kids-green font-black">charge()</span>
+            <span className="text-kids-green font-black">{t('block_charge')}</span>
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={handleTryOnce}
@@ -180,46 +197,123 @@ export function InfiniteCharge() {
             </motion.button>
           </div>
 
-          {/* Divider */}
           <div className="border-t border-gray-700" />
 
-          {/* While loop */}
-          <div>
-            <span className="text-kids-yellow font-black">{t('loop_label')}</span>
-            <div className="ml-6 mt-2 flex items-center gap-2">
+          {/* While loop with condition slots */}
+          <div className="space-y-2">
+            {/* Header line: while ( [var] [op] [target] ) { */}
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-kids-yellow font-black">{t('kw_while')}</span>
+              <span className="text-white">(</span>
+              <Slot
+                id="cond-var"
+                filled={varFilled}
+                filledLabel={t('block_battery')}
+                filledColor="bg-kids-orange text-white"
+                placeholder={t('cond_var_ph')}
+                wide
+              />
+              <Slot
+                id="cond-op"
+                filled={opFilled}
+                filledLabel={t('block_operator')}
+                filledColor="bg-kids-red text-white"
+                placeholder={t('cond_op_ph')}
+              />
+              <Slot
+                id="cond-target"
+                filled={targetFilled}
+                filledLabel={t('block_target')}
+                filledColor="bg-kids-blue text-white"
+                placeholder={t('cond_target_ph')}
+              />
+              <span className="text-white">) {'{'}</span>
+            </div>
+
+            {/* Body: charge() slot */}
+            <div className="ml-5 flex items-center gap-2">
               <span className="text-gray-500 text-xs select-none">›</span>
-              <DroppableSlot
-                filled={slotFilled}
-                chipLabel={t('block_charge')}
+              <Slot
+                id="charge-slot"
+                filled={chargeFilled}
+                filledLabel={t('block_charge')}
+                filledColor="bg-kids-green text-white"
                 placeholder={t('slot_placeholder')}
+                wide
               />
             </div>
-            <div className="text-white font-black mt-2">{'}'}</div>
+
+            <div className="text-white font-black">{'}'}</div>
           </div>
         </div>
 
-        {/* Block tray */}
+        {/* ── Block tray ── */}
         <div className="flex gap-3 flex-wrap justify-center min-h-[52px] items-center">
-          {!slotFilled && (
-            <DraggableChip id="charge-chip" label={t('block_charge')} />
+          {!varFilled && (
+            <DraggableChip
+              id="battery-chip"
+              label={t('block_battery')}
+              colorClass="bg-kids-orange text-white border-kids-orange/60"
+            />
           )}
-          {slotFilled && phase === 'idle' && status !== 'success' && (
+          {!opFilled && (
+            <DraggableChip
+              id="op-chip"
+              label={t('block_operator')}
+              colorClass="bg-kids-red text-white border-kids-red/60"
+            />
+          )}
+          {!targetFilled && (
+            <DraggableChip
+              id="target-chip"
+              label={t('block_target')}
+              colorClass="bg-kids-blue text-white border-kids-blue/60"
+            />
+          )}
+          {!chargeFilled && (
+            <DraggableChip
+              id="charge-chip"
+              label={t('block_charge')}
+              colorClass="bg-kids-green text-white border-kids-green/60"
+            />
+          )}
+          {allFilled && phase === 'idle' && status !== 'success' && (
             <p className="text-sm font-bold text-kids-green animate-bounce">
-              ✅ Ready — press Run Loop!
+              {t('ready_label')}
             </p>
           )}
         </div>
 
+        {/* ── Mission hint ── */}
+        <div className="w-full bg-kids-green/10 border-2 border-kids-green/30 rounded-xl px-4 py-2 text-xs font-bold text-kids-green text-center">
+          {t('mission_hint')}
+        </div>
+
         <DragOverlay>
+          {activeDrag === 'battery-chip' && (
+            <div className="px-3 py-2 rounded-xl bg-kids-orange text-white font-mono font-black text-sm shadow-xl border-4 border-kids-orange/60">
+              {t('block_battery')}
+            </div>
+          )}
+          {activeDrag === 'op-chip' && (
+            <div className="px-3 py-2 rounded-xl bg-kids-red text-white font-mono font-black text-sm shadow-xl border-4 border-kids-red/60">
+              {t('block_operator')}
+            </div>
+          )}
+          {activeDrag === 'target-chip' && (
+            <div className="px-3 py-2 rounded-xl bg-kids-blue text-white font-mono font-black text-sm shadow-xl border-4 border-kids-blue/60">
+              {t('block_target')}
+            </div>
+          )}
           {activeDrag === 'charge-chip' && (
-            <div className="px-4 py-3 rounded-xl bg-kids-green text-white font-mono font-black text-sm shadow-xl border-4 border-kids-green/60">
+            <div className="px-3 py-2 rounded-xl bg-kids-green text-white font-mono font-black text-sm shadow-xl border-4 border-kids-green/60">
               {t('block_charge')}
             </div>
           )}
         </DragOverlay>
       </DndContext>
 
-      {/* Arena — battery visual */}
+      {/* ── Battery arena ── */}
       <div
         className="relative w-full rounded-2xl overflow-hidden border-4 border-kids-green"
         style={{ height: 240, background: 'linear-gradient(to bottom, #0f0c29, #302b63, #24243e)' }}
@@ -233,7 +327,7 @@ export function InfiniteCharge() {
           />
         ))}
 
-        {/* Bleep — shows tired when one-shot fails */}
+        {/* Bleep */}
         <motion.div
           className="absolute left-[12%] text-4xl select-none"
           style={{ bottom: 24 }}
@@ -248,10 +342,8 @@ export function InfiniteCharge() {
           className="absolute right-[15%] rounded-xl border-4 border-white/30 overflow-hidden"
           style={{ width: 54, height: 160, bottom: 24 }}
         >
-          {/* Battery cap */}
           <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-3 bg-white/30 rounded-t-md" />
 
-          {/* Fill */}
           <motion.div
             className="absolute bottom-0 left-0 right-0 rounded-b-lg"
             style={{ backgroundColor: barColor }}
@@ -259,12 +351,10 @@ export function InfiniteCharge() {
             transition={{ duration: 0.04, ease: 'linear' }}
           />
 
-          {/* % text */}
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="font-black text-white text-sm drop-shadow">{battery}%</span>
           </div>
 
-          {/* Charging pulse overlay */}
           <AnimatePresence>
             {phase === 'charging' && (
               <motion.div
@@ -278,12 +368,12 @@ export function InfiniteCharge() {
           </AnimatePresence>
         </div>
 
-        {/* Label */}
+        {/* Bottom label */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap">
           <span className="font-mono text-xs text-white/50">{t('battery_label')} = {battery}</span>
         </div>
 
-        {/* Tired feedback chip */}
+        {/* Feedback chips */}
         <AnimatePresence>
           {tired && phase === 'idle' && (
             <motion.div
@@ -296,8 +386,6 @@ export function InfiniteCharge() {
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Loading chip */}
         <AnimatePresence>
           {phase === 'charging' && (
             <motion.div
@@ -312,7 +400,7 @@ export function InfiniteCharge() {
         </AnimatePresence>
       </div>
 
-      {/* Buttons */}
+      {/* ── Buttons ── */}
       <div className="flex gap-3 flex-wrap justify-center">
         <motion.button
           onClick={handleRun}
