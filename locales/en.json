@@ -340,21 +340,33 @@
     "feedback_crashed": "💥 Crash! Bleep needs the IF check to jump over meteors!"
   },
   "lesson20": {
-    "title": "The Grand Finale: Creative Mode",
-    "story": "Congratulations! You're in full control now. Build whatever you like in Bleep's space!",
-    "goal": "Try out all the blocks you've learned and click 'Finish Course' to receive your Certificate!",
+    "title": "The Grand Finale: Creative Sandbox",
+    "story": "Congratulations! You're in full control of the cosmos. Use blocks to spawn, move and animate objects in your space!",
+    "goal": "Use the blocks to set objects in motion — then click 'Finish Course' to receive your Certificate!",
+    "palette_label": "Artist's Palette",
+    "canvas_label": "Your Cosmos",
+    "log_label": "Code Executed",
+    "log_empty": "Press Run to see your program in action...",
     "button_run": "▶ Run",
+    "button_clear": "🗑️ Clear",
     "button_finish": "Finish Course 🎓",
     "button_hint": "Hint",
-    "hint": "Click any blocks to add them to your program, then press Run to see Bleep in action!",
-    "success": "🎓 You did it! You are a Master Architect!",
-    "certificate_title": "Certificate of Completion",
+    "hint": "Try spawning an object, setting its velocity, and changing the background! Click objects to make them jump!",
+    "success": "🎓 You did it! You are a Master Space Architect!",
+    "certificate_title": "Graduated from the Space Programming Academy",
     "certificate_sub": "This certifies that",
-    "certificate_body": "has mastered all 20 lessons of Bleep's Coding Academy",
-    "min_blocks_hint": "Add at least 3 blocks to your program first!",
-    "tray_label": "Your Coding Toolbox",
-    "workspace_label": "Your Program",
-    "workspace_empty": "Click blocks above to build your program!"
+    "certificate_body": "has mastered the secrets of Variables, Loops and Space Logic.",
+    "min_blocks_hint": "Add at least 1 object to the cosmos before finishing!",
+    "success_cert": "Your certificate has been saved! 🎓",
+    "block_criar": "spawn_object(type)",
+    "block_velocidade": "set_velocity(x,y)",
+    "block_saltar": "on_click → jump()",
+    "block_fundo": "change_bg()",
+    "bg_nebula_purple": "Purple Nebula",
+    "bg_galaxy_blue": "Blue Galaxy",
+    "bg_sunset_cosmos": "Sunset Cosmos",
+    "bg_deep_space": "Deep Space",
+    "bg_aurora": "Aurora Borealis"
   },
   "stickerBook": {
     "title": "My Badge Collection",
@@ -369,26 +381,86 @@
     "no_badges": "No badges yet — go complete a lesson!"
   },
   "badges": {
-    "chef_logic":       { "name": "Master Chef",         "description": "You put steps in the right order — just like a real recipe! Sequences are the building blocks of every program." },
-    "weather_wizard":   { "name": "Weather Wizard",      "description": "You used IF and THEN to make smart decisions! Conditionals let your code react to the world." },
-    "loop_dancer":      { "name": "Loop Dancer",         "description": "Instead of repeating yourself, you used a LOOP — that's what smart coders do!" },
-    "magic_box":        { "name": "Magic Box",           "description": "You stored a number in a VARIABLE — now your code can remember things!" },
-    "backpack_pro":     { "name": "Adventure Hiker",     "description": "You packed items into an ARRAY — like a shopping list your code can read!" },
-    "func_hero":        { "name": "Function Hero",       "description": "You defined AND called a FUNCTION — the secret power of all great programmers!" },
-    "click_master":     { "name": "Secret Listener",     "description": "You learned about EVENTS — your code can listen and react to clicks, keys, and more!" },
-    "bug_detective":    { "name": "Bug Detective",       "description": "You found and fixed a bug — every great programmer is also a great detective!" },
-    "map_explorer":     { "name": "Map Explorer",        "description": "You navigated with X and Y coordinates — now you can place anything, anywhere on screen!" },
-    "game_master":      { "name": "Game Master",         "description": "You handled COLLISIONS — the logic that makes games feel real!" },
-    "secret_coder":     { "name": "Secret Messenger",    "description": "You worked with STRINGS — text is data too, and you know how to use it!" },
-    "data_librarian":   { "name": "Data Librarian",      "description": "You fetched data from an API — your code can now talk to the whole internet!" },
-    "castle_guard":     { "name": "Castle Guard",        "description": "You validated data — protecting your program from bad input like a true guardian!" },
-    "moon_jumper":      { "name": "Moon Jumper",         "description": "You simulated gravity and physics — making objects move just like on the Moon!" },
-    "clone_commander":  { "name": "Clone Commander",     "description": "You cloned objects — one piece of code, infinite copies. Very efficient!" },
-    "race_driver":      { "name": "Estoril Racer",       "description": "You built acceleration logic — speed, friction, and momentum all in your code!" },
-    "ai_trainer":       { "name": "While Loop Wizard",    "description": "You used a WHILE loop to keep charging until the battery hit 100% — loops that run until a condition is met!" },
-    "logic_path":       { "name": "Vault Guardian",      "description": "You combined two conditions with AND — both must be true at the same time to open the vault!" },
-    "world_builder":    { "name": "World Builder",       "description": "You designed a level from scratch — part programmer, part architect, all awesome!" },
-    "master_architect": { "name": "Master Architect",    "description": "You completed ALL 20 lessons. You are a true coding master. The journey begins here!" }
+    "chef_logic": {
+      "name": "Master Chef",
+      "description": "You put steps in the right order — just like a real recipe! Sequences are the building blocks of every program."
+    },
+    "weather_wizard": {
+      "name": "Weather Wizard",
+      "description": "You used IF and THEN to make smart decisions! Conditionals let your code react to the world."
+    },
+    "loop_dancer": {
+      "name": "Loop Dancer",
+      "description": "Instead of repeating yourself, you used a LOOP — that's what smart coders do!"
+    },
+    "magic_box": {
+      "name": "Magic Box",
+      "description": "You stored a number in a VARIABLE — now your code can remember things!"
+    },
+    "backpack_pro": {
+      "name": "Adventure Hiker",
+      "description": "You packed items into an ARRAY — like a shopping list your code can read!"
+    },
+    "func_hero": {
+      "name": "Function Hero",
+      "description": "You defined AND called a FUNCTION — the secret power of all great programmers!"
+    },
+    "click_master": {
+      "name": "Secret Listener",
+      "description": "You learned about EVENTS — your code can listen and react to clicks, keys, and more!"
+    },
+    "bug_detective": {
+      "name": "Bug Detective",
+      "description": "You found and fixed a bug — every great programmer is also a great detective!"
+    },
+    "map_explorer": {
+      "name": "Map Explorer",
+      "description": "You navigated with X and Y coordinates — now you can place anything, anywhere on screen!"
+    },
+    "game_master": {
+      "name": "Game Master",
+      "description": "You handled COLLISIONS — the logic that makes games feel real!"
+    },
+    "secret_coder": {
+      "name": "Secret Messenger",
+      "description": "You worked with STRINGS — text is data too, and you know how to use it!"
+    },
+    "data_librarian": {
+      "name": "Data Librarian",
+      "description": "You fetched data from an API — your code can now talk to the whole internet!"
+    },
+    "castle_guard": {
+      "name": "Castle Guard",
+      "description": "You validated data — protecting your program from bad input like a true guardian!"
+    },
+    "moon_jumper": {
+      "name": "Moon Jumper",
+      "description": "You simulated gravity and physics — making objects move just like on the Moon!"
+    },
+    "clone_commander": {
+      "name": "Clone Commander",
+      "description": "You cloned objects — one piece of code, infinite copies. Very efficient!"
+    },
+    "race_driver": {
+      "name": "Estoril Racer",
+      "description": "You built acceleration logic — speed, friction, and momentum all in your code!"
+    },
+    "ai_trainer": {
+      "name": "While Loop Wizard",
+      "description": "You used a WHILE loop to keep charging until the battery hit 100% — loops that run until a condition is met!"
+    },
+    "logic_path": {
+      "name": "Vault Guardian",
+      "description": "You combined two conditions with AND — both must be true at the same time to open the vault!"
+    },
+    "world_builder": {
+      "name": "World Builder",
+      "description": "You designed a level from scratch — part programmer, part architect, all awesome!"
+    },
+    "master_architect": {
+      "name": "Master Architect",
+      "description": "You completed ALL 20 lessons. You are a true coding master. The journey begins here!"
+    }
   },
   "profile": {
     "setupHeading": "Almost ready!",
