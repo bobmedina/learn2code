@@ -366,7 +366,20 @@
     "bg_galaxy_blue": "Galáxia Azul",
     "bg_sunset_cosmos": "Cosmos ao Pôr do Sol",
     "bg_deep_space": "Espaço Profundo",
-    "bg_aurora": "Aurora Boreal"
+    "bg_aurora": "Aurora Boreal",
+    "cat_ciclos": "Ciclos",
+    "cat_eventos": "Eventos",
+    "cat_movimento": "Movimento",
+    "cat_criacao": "Criação & Estilo",
+    "editor_label": "Editor de Código",
+    "editor_empty": "Adiciona blocos da paleta para começar...",
+    "add_inside_hint": "A adicionar dentro de",
+    "drop_here": "Clica na paleta para adicionar",
+    "empty_container": "Vazio — clica num bloco da paleta",
+    "click_palette_hint": "Clica na paleta para adicionar aqui",
+    "click_bleep_hint": "Clica no Bleep! 👆",
+    "select_root_hint": "quando_executar selecionado",
+    "select_cont_hint": "container selecionado"
   },
   "stickerBook": {
     "title": "A Minha Coleção de Medalhas",

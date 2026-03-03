@@ -366,7 +366,20 @@
     "bg_galaxy_blue": "Blue Galaxy",
     "bg_sunset_cosmos": "Sunset Cosmos",
     "bg_deep_space": "Deep Space",
-    "bg_aurora": "Aurora Borealis"
+    "bg_aurora": "Aurora Borealis",
+    "cat_ciclos": "Loops",
+    "cat_eventos": "Events",
+    "cat_movimento": "Movement",
+    "cat_criacao": "Creation & Style",
+    "editor_label": "Code Editor",
+    "editor_empty": "Add blocks from the palette to get started...",
+    "add_inside_hint": "Adding inside",
+    "drop_here": "Click a palette block to add here",
+    "empty_container": "Empty — click a palette block",
+    "click_palette_hint": "Click palette to add here",
+    "click_bleep_hint": "Click Bleep! 👆",
+    "select_root_hint": "quando_executar selected",
+    "select_cont_hint": "container selected"
   },
   "stickerBook": {
     "title": "My Badge Collection",
