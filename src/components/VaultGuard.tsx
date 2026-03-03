@@ -108,7 +108,8 @@ export function VaultGuard() {
   );
 
   function handleRun() {
-    if (!keyPlaced || !fpPlaced) return;
+    // Both condition blocks must be placed AND both scanners toggled ON
+    if (!keyPlaced || !fpPlaced || status === 'success') return;
     if (keyOn && fpOn) {
       setResult('open');
       if (!savedRef.current) {
@@ -161,7 +162,7 @@ export function VaultGuard() {
 
         {/* Code editor */}
         <div className="w-full bg-gray-900 rounded-2xl p-5 font-mono text-sm shadow-xl space-y-2">
-          {/* if ( slot1 AND slot2 ) { */}
+          {/* if ( slot1 AND slot2 ) então/then { */}
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-kids-yellow font-black">{t('if_label')}</span>
             <DroppableSlot
@@ -179,7 +180,9 @@ export function VaultGuard() {
               chipColor="bg-kids-blue text-white"
               placeholder={t('slot2_placeholder')}
             />
+            <span className="text-white">)</span>
             <span className="text-kids-yellow font-black">{t('then_label')}</span>
+            <span className="text-white">{'{'}</span>
           </div>
           <div className="ml-4 text-kids-green font-black">{t('action_label')}</div>
           <div className="text-white font-black">{t('close_label')}</div>

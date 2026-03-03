@@ -307,7 +307,7 @@
     "fp_label": "👆 Impressão Digital",
     "if_label": "se (",
     "and_label": "E",
-    "then_label": ") {",
+    "then_label": "então",
     "action_label": "  abrirCofre()",
     "close_label": "}",
     "success": "🔐 Cofre aberto! Dominaste o E lógico!",
