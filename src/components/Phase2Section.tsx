@@ -24,6 +24,7 @@ export function Phase2Section({
   phase2Sub,
   phase2UnlockedLabel,
   phase2LockHint,
+  lessonWord,
   locale,
 }: {
   unlocked: boolean;
@@ -37,6 +38,7 @@ export function Phase2Section({
   phase2Sub: string;
   phase2UnlockedLabel: string;
   phase2LockHint: string;
+  lessonWord: string;
   locale: string;
 }) {
   const titles: Record<number, string> = {
@@ -70,7 +72,7 @@ export function Phase2Section({
               {PHASE2_LESSONS.map(({ n }) => (
                 <div key={n} className="card-kids border-gray-200 bg-gray-50">
                   <div className="text-4xl mb-2">🔮</div>
-                  <h2 className="text-lg font-black text-gray-400">Lesson {n}</h2>
+                  <h2 className="text-lg font-black text-gray-400">{lessonWord} {n}</h2>
                   <p className="text-gray-300 font-bold text-xs mt-1">{phase2Sub}</p>
                 </div>
               ))}
@@ -118,7 +120,7 @@ export function Phase2Section({
                   className={`card-kids ${color} hover:scale-105 transition-transform block`}
                 >
                   <div className="text-5xl mb-3">{emoji}</div>
-                  <h2 className="text-xl font-black text-kids-purple">Lesson {n}</h2>
+                  <h2 className="text-xl font-black text-kids-purple">{lessonWord} {n}</h2>
                   <p className="text-gray-500 font-bold text-sm mt-1">{titles[n]}</p>
                 </Link>
               </motion.div>

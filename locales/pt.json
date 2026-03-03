@@ -1,4 +1,7 @@
 {
+  "common": {
+    "lesson": "Lição"
+  },
   "lesson1": {
     "title": "O Pequeno-Almoço do Robot",
     "story": "Conhece o Bleep! Ele precisa de ajuda com a torrada. Ajuda-o a pôr os passos pela ordem certa!",

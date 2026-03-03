@@ -1,4 +1,7 @@
 {
+  "common": {
+    "lesson": "Lesson"
+  },
   "lesson1": {
     "title": "The Breakfast Robot",
     "story": "Meet Bleep! He needs help making toast. Help him by putting the steps in order!",
